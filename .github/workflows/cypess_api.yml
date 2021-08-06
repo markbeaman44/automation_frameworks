@@ -8,11 +8,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          spec: cypress_api/
+        working-directory: ./cypress_api
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
+        working-directory: ./cypress_api
         with:
-            spec: cypress_api/tests/integration/v1/*.js
+            spec: tests/integration/v1/*.js
