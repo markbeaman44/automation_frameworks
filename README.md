@@ -2,5 +2,5 @@
 
 ## Cypress API Testing
 ```
-Go to > cypress_api folder
+Go to: cypress_api folder
 ```
