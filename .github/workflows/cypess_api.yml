@@ -5,7 +5,9 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    working-directory: ./cypress_api
+    defaults:
+      run:
+        working-directory: ./cypress_api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
