@@ -2,5 +2,10 @@
 
 ## Cypress API Testing
 ```
-Go to: cypress_api folder
+Go to: api_cypress folder
+```
+
+## Jest Axois API Testing
+```
+Go to: api_jest_axios folder
 ```
