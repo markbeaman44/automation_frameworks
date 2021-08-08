@@ -6,14 +6,9 @@ jobs:
   jest-run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Jest run
+        uses: stefanoeb/jest-action@1.0.3
         with:
-          working-directory: ./api_jest_axios
-      - name: Install modules
-        run: npm install
-        with:
-          working-directory: ./api_jest_axios
-      - name: Run tests
-        run: npm run test
-        with:
-          working-directory: ./api_jest_axios
+            working-directory: ./api_jest_axios
