@@ -1,0 +1,15 @@
+name: Jest API Tests
+
+on: [push]
+
+jobs:
+  jest-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          working-directory: ./api_jest_axios
+      - name: Install modules
+        run: npm install
+      - name: Run tests
+        run: npm run test
