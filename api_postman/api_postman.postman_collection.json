@@ -32,8 +32,8 @@
 							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(formatData[indextles][3]);",
 							"});",
 							"",
-							"pm.test(\"Response time is less than 300ms\", () => {",
-							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"pm.test(\"Response time is less than 600ms\", () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(600);",
 							"});",
 							""
 						],
@@ -121,8 +121,8 @@
 							"    pm.expect(pm.response.json()).to.eql(statusData[index][3]);",
 							"});",
 							"",
-							"pm.test(\"Response time is less than 400ms\", () => {",
-							"  pm.expect(pm.response.responseTime).to.be.below(400);",
+							"pm.test(\"Response time is less than 600ms\", () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(600);",
 							"});"
 						],
 						"type": "text/javascript"
