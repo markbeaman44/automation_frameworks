@@ -2,10 +2,6 @@ name: Postman API Tests
 
 on: [push]
 
-defaults:
-  run:
-    working-directory: ./api_postman
-
 jobs:
   postman-run:
     runs-on: ubuntu-latest
@@ -15,4 +11,4 @@ jobs:
       - name: Postman run
         uses: matt-ball/newman-action@master
         with:
-          collection: api_postman.postman_collection.json
+          collection: ./api_postman/api_postman.postman_collection.json
