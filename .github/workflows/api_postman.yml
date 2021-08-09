@@ -8,8 +8,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Postman run
-        uses: matt-ball/newman-action@master
+      - uses: actions/setup-node@v2-beta
         with:
-          globals: ./api_postman/api_postman.postman_globals.json
-          collection: ./api_postman/api_postman.postman_collection.json
+          node-version: '12'
+      - name: Install Postman
+        run: npm install -g newman
+      - name: Postman run
+        run: newman run ./api_postman/api_postman.postman_collection.json --globals ./api_postman/api_postman.postman_globals.json
+        # uses: matt-ball/newman-action@master
+        # with:
+        #   globals: ./api_postman/api_postman.postman_globals.json
+        #   collection: ./api_postman/api_postman.postman_collection.json
