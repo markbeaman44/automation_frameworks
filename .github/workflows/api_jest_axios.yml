@@ -11,6 +11,6 @@ jobs:
       - name: Install modules
         run: npm install
         working-directory: ./api_jest_axios
-      - name: Run tests
+      - name: Jest run
         run: npm run test
         working-directory: ./api_jest_axios

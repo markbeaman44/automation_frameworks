@@ -5,7 +5,12 @@
 Go to: api_cypress folder
 ```
 
-## Jest Axois API Testing
+## Jest Axios API Testing
 ```
 Go to: api_jest_axios folder
+```
+
+## Postman API Testing
+```
+Go to: api_postman folder
 ```

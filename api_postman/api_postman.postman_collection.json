@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "7a23b6e3-1579-4017-afdc-7735a5657761",
+		"name": "api_postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{baseURL}}/satellites/{{id}}/tles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const formatData = pm.globals.get('formatData');",
+							"const indextles = parseInt(pm.globals.get('indextles'));",
+							"",
+							"if(indextles < formatData.length) {",
+							"  pm.globals.set('indextles', (indextles+1));",
+							"  postman.setNextRequest(\"{{baseURL}}/satellites/{{id}}/tles\");",
+							"}",
+							"if(indextles === formatData.length - 1) {",
+							"    pm.globals.set('indextles', 0);",
+							"    postman.setNextRequest(\"{{baseURL}}/satellites/{{id}}/positions\");",
+							"}",
+							"",
+							"pm.test(`Should return ${formatData[indextles][1]} response status code`, function () {",
+							"    pm.expect(pm.response.code).to.equal(formatData[indextles][1]);",
+							"});",
+							"",
+							"pm.test(`Should return content-type with correct format`, function () {",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(formatData[indextles][3]);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 600ms\", () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"  const formatData = [",
+							"    // [ID, statusCodes, format]",
+							"    [\"25544\", 200, \"json\", \"application/json\"],",
+							"    [\"25544\", 200, \"text\", \"text/plain\"],",
+							"    [\"25543\", 404, \"json\", \"application/json\"]",
+							"  ]",
+							"",
+							"  pm.globals.set(\"formatData\", formatData);",
+							"  let indextles = pm.globals.get('indextles');",
+							"",
+							"  if(indextles < formatData.length) {",
+							"    pm.globals.set('ID', formatData[indextles][0])",
+							"    pm.globals.set('format', formatData[indextles][2])",
+							"  }",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}v1/satellites/{{ID}}/tles?format={{format}}",
+					"host": [
+						"{{baseURL}}v1"
+					],
+					"path": [
+						"satellites",
+						"{{ID}}",
+						"tles"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "{{format}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{baseURL}}/satellites/{{id}}/positions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const statusData = pm.globals.get('statusData');",
+							"const index = parseInt(pm.globals.get('index'));",
+							"",
+							"if(index < statusData.length) {",
+							"  pm.globals.set('index', (index+1));",
+							"  postman.setNextRequest(\"{{baseURL}}/satellites/{{id}}/positions\");",
+							"}",
+							"if(index === statusData.length - 1) {",
+							"    pm.globals.set('index', 0);",
+							"    postman.setNextRequest(null);",
+							"}",
+							"",
+							"pm.test(`Should return ${statusData[index][1]} response status code`, function () {",
+							"    pm.expect(pm.response.code).to.equal(statusData[index][1]);",
+							"});",
+							"",
+							"pm.test(\"Should return response data based on parameters\", function () {",
+							"    pm.expect(pm.response.json()).to.eql(statusData[index][3]);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 600ms\", () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"  const statusData = [",
+							"    // [id, statusCodes, timestamp, jsonData]",
+							"    [\"25544\", 200, \"1436029892\", [",
+							"      {",
+							"        \"name\": \"iss\",",
+							"        \"id\": 25544,",
+							"        \"latitude\": -24.870147579366,",
+							"        \"longitude\": 17.59950771856,",
+							"        \"altitude\": 407.8263965908,",
+							"        \"velocity\": 27597.931157627,",
+							"        \"visibility\": \"daylight\",",
+							"        \"footprint\": 4445.0036883392,",
+							"        \"timestamp\": 1436029892,",
+							"        \"daynum\": 2457208.2163426,",
+							"        \"solar_lat\": 22.85465108118,",
+							"        \"solar_lon\": 283.22043315343,",
+							"        \"units\": \"kilometers\"",
+							"      }",
+							"    ]],",
+							"    [\"25544\", 400, \"\", {",
+							"      \"error\": \"invalid timestamp in list: \",",
+							"      \"status\": 400",
+							"    }],",
+							"    [\"25543\", 404, \"1436029892\", {",
+							"      \"error\": \"satellite not found\",",
+							"      \"status\": 404",
+							"    }]",
+							"  ]",
+							"",
+							"  pm.globals.set(\"statusData\", statusData);",
+							"  let index = pm.globals.get('index');",
+							"",
+							"  if(index < statusData.length) {",
+							"    pm.globals.set('id', statusData[index][0])",
+							"    pm.globals.set('timestamp', statusData[index][2])",
+							"  }",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}v1/satellites/{{id}}/positions?timestamps={{timestamp}}",
+					"host": [
+						"{{baseURL}}v1"
+					],
+					"path": [
+						"satellites",
+						"{{id}}",
+						"positions"
+					],
+					"query": [
+						{
+							"key": "timestamps",
+							"value": "{{timestamp}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://api.wheretheiss.at/"
+		},
+		{
+			"key": "index",
+			"value": "0"
+		},
+		{
+			"key": "indextles",
+			"value": "0"
+		}
+	]
+}

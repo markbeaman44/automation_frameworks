@@ -1,0 +1,119 @@
+{
+	"id": "b5d38113-8458-452b-84b0-94756b30b34c",
+	"values": [
+		{
+			"key": "baseURL",
+			"value": "baseURL",
+			"enabled": true
+		},
+		{
+			"key": "id",
+			"value": "25543",
+			"enabled": true
+		},
+		{
+			"key": "timestamp",
+			"value": "1436029892",
+			"enabled": true
+		},
+		{
+			"key": "statusCode",
+			"value": 404,
+			"enabled": true
+		},
+		{
+			"key": "index",
+			"value": 0,
+			"enabled": true
+		},
+		{
+			"key": "statusData",
+			"value": [
+				[
+					"25544",
+					200,
+					"1436029892",
+					[
+						{
+							"altitude": 407.8263965908,
+							"daynum": 2457208.2163426,
+							"footprint": 4445.0036883392,
+							"id": 25544,
+							"latitude": -24.870147579366,
+							"longitude": 17.59950771856,
+							"name": "iss",
+							"solar_lat": 22.85465108118,
+							"solar_lon": 283.22043315343,
+							"timestamp": 1436029892,
+							"units": "kilometers",
+							"velocity": 27597.931157627,
+							"visibility": "daylight"
+						}
+					]
+				],
+				[
+					"25544",
+					400,
+					"",
+					{
+						"error": "invalid timestamp in list: ",
+						"status": 400
+					}
+				],
+				[
+					"25543",
+					404,
+					"1436029892",
+					{
+						"error": "satellite not found",
+						"status": 404
+					}
+				]
+			],
+			"enabled": true
+		},
+		{
+			"key": "format",
+			"value": "json",
+			"enabled": true
+		},
+		{
+			"key": "formatData",
+			"value": [
+				[
+					"25544",
+					200,
+					"json",
+					"application/json"
+				],
+				[
+					"25544",
+					200,
+					"text",
+					"text/plain"
+				],
+				[
+					"25543",
+					404,
+					"json",
+					"application/json"
+				]
+			],
+			"enabled": true
+		},
+		{
+			"key": "indextles",
+			"value": 0,
+			"enabled": true
+		},
+		{
+			"key": "ID",
+			"value": "25543",
+			"enabled": true
+		}
+	],
+	"name": "api_postman Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2021-08-09T18:47:06.726Z",
+	"_postman_exported_using": "Postman/7.36.6"
+}
