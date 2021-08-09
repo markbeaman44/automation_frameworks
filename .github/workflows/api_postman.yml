@@ -11,5 +11,5 @@ jobs:
       - name: Postman run
         uses: matt-ball/newman-action@master
         with:
-          global: ./api_postman/api_postman.postman_globals.json
+          globals: ./api_postman/api_postman.postman_globals.json
           collection: ./api_postman/api_postman.postman_collection.json
