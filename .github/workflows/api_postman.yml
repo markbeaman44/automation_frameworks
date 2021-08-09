@@ -3,7 +3,8 @@ name: Postman API Tests
 on: [push]
 
 defaults:
-  working-directory: ./api_postman
+  run:
+    working-directory: ./api_postman
 
 jobs:
   postman-run:
