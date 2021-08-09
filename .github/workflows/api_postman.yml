@@ -11,5 +11,5 @@ jobs:
       - name: Postman run
         uses: matt-ball/newman-action@master
         with:
-          working-directory: ./api_postman
+          workingDir: ./api_postman
           collection: api_postman.postman_collection.json
