@@ -14,4 +14,16 @@ describe('Test satelite TLE data via API GET requests', () => {
       expect(response.status).toEqual(statusCodes);
     });
   });
+
+  const formatData: [string, Params, string][] = [
+    // [id, parameters, contentType]
+    ['25544', { format: 'json' }, 'application/json'],
+    ['25544', { format: 'text' }, 'text/plain'],
+  ];
+
+  it.each(formatData)(`Should return content-type with correct format`, async (id, parameters, contentType) => {
+    await getTlesAPI(id, parameters).then((response) => {
+      expect(response.headers['content-type']).toEqual(contentType);
+    });
+  });
 });

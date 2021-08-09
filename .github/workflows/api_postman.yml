@@ -1,0 +1,14 @@
+name: Postman API Tests
+
+on: [push]
+
+jobs:
+  jest-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: matt-ball/newman-action@master
+        working-directory: ./api_jest_axios
+        with:
+          collection: api_postman.postman_collection.json
