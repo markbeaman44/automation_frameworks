@@ -14,3 +14,8 @@ Go to: api_jest_axios folder
 ```
 Go to: api_postman folder
 ```
+
+## Cypress UI Testing
+```
+Go to: ui_cypress folder
+```

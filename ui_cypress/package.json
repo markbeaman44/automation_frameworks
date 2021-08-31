@@ -1,0 +1,30 @@
+{
+  "name": "markbeamancypressui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress-open": "cypress open",
+    "cypress-run": "cypress run",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "cucumber": "^7.0.0-rc.0",
+    "cypress": "8.0.0",
+    "cypress-commands": "^1.1.0",
+    "cypress-cucumber-preprocessor": "^4.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "cypress-cucumber-preprocessor": {
+    "step_definitions": "cypress/integration/step_definitions"
+  }
+}
