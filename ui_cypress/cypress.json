@@ -1,0 +1,11 @@
+{
+    "testFiles": "**/*.feature",
+    "ignoreTestFiles": "*.ts",
+    "baseUrl": "https://www.saucedemo.com/",
+    "chromeWebSecurity": false,
+    "watchForFileChanges": false,
+    "retries": {
+      "runMode": 2
+    }
+  }
+  
