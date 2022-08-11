@@ -4,20 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cypress-open": "cypress open",
-    "cypress-run": "cypress run",
+    "cypress-open": "cypress open --e2e",
+    "cypress-run": "cypress run --e2e",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^12.0.0",
+    "@cypress/browserify-preprocessor": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
-    "cucumber": "^7.0.0-rc.0",
-    "cypress": "8.0.0",
+    "cypress": "^10.4.0",
     "cypress-commands": "^1.1.0",
-    "cypress-cucumber-preprocessor": "^4.2.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
@@ -25,6 +25,8 @@
     "typescript": "^4.3.5"
   },
   "cypress-cucumber-preprocessor": {
-    "step_definitions": "cypress/integration/step_definitions"
+    "stepDefinitions": [
+      "cypress/e2e/step_definitions/**/*.ts"
+    ]
   }
 }

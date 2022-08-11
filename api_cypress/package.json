@@ -4,17 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cypress-open": "cypress open",
-    "cypress-run": "cypress run",
+    "cypress-open": "cypress open --e2e",
+    "cypress-run": "cypress run --e2e",
     "lint": "eslint --fix --ext .js,.jsx ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cypress": "^8.0.0"
-  },
   "devDependencies": {
+    "cypress": "^10.4.0",
     "eslint": "^7.31.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-cypress": "^2.11.3",

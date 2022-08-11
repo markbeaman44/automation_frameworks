@@ -21,7 +21,7 @@ describe('Test satelite positions via API GET requests', () => {
 
   it('Should return response data for specific timestamp', () => {
     cy.getPositionsAPI('25544', { timestamps: '1436029902' }).then((response) => {
-      cy.readFile('tests/fixtures/p_ts_1436029902.json').then((jsonResults) => {
+      cy.readFile('cypress/fixtures/p_ts_1436029902.json').then((jsonResults) => {
         expect(response.body).to.deep.equal(jsonResults)
       })
     })
