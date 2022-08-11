@@ -6,23 +6,12 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: |
-          if [ -e yarn.lock ]; then
-          yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
-        with:
-            working-directory: ./api_cypress
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
             working-directory: ./api_cypress
             spec: cypress/e2e/v1/*.js
