@@ -1,4 +1,4 @@
-import { Then } from 'cypress-cucumber-preprocessor/steps';
+import { Then } from '@badeball/cypress-cucumber-preprocessor';
 import * as checkout from '../../pages/checkout';
 
 Then(/validates "([^"]*)" items in shopping cart/, (itemTotal: string) => {
