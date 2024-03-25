@@ -28,9 +28,11 @@ export default defineConfig({
     specPattern: ["**/*.feature", "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}"],
     baseUrl: "https://www.saucedemo.com/",
   },
+  viewportWidth: 1920,
+  viewportHeight: 1080,
   chromeWebSecurity: false,
   watchForFileChanges: false,
   retries: {
-    runMode: 2
+    runMode: 1
   }
 });
