@@ -8,7 +8,7 @@ function storeSelectedValues(itemPosition: string) {
   let value: string;
   cy.get(`${cssItemSelector(itemPosition)}`).within((info) => {
     cy.wrap(info)
-      .find('[class="inventory_item_name"]')
+      .find('[class="inventory_item_label"] > a')
       .invoke('text')
       .then((nameValue) => {
         value = nameValue;
