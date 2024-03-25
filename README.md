@@ -19,3 +19,8 @@ Go to: api_postman folder
 ```
 Go to: ui_cypress folder
 ```
+
+## Webdriver.io UI Testing
+```
+Go to: ui_webdriver folder
+```

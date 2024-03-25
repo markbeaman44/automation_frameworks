@@ -10,7 +10,7 @@ Feature: shopping cart
         Then validates "1" items in shopping cart
         And validates "<position>" item title & price information
     Examples: 
-        | position |
+        | position | 
         | 1st      |
         | 2nd      |
         | 3rd      |
