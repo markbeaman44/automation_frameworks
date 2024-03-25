@@ -11,13 +11,17 @@ npm install
 
 ## Run your end-to-end tests
 ```
-npm run cypress-open
+npm run test:open
 ```
 execute tests via GUI and select 1 or many tests to run
 ```
-npm run cypress-run
+npm run test:run
 ```
 execute tests (run in background)
+```
+npm run test:open -- --spec ./tests/e2e/login.feature
+```
+execute chosen test via GUI
 
 ## Lints and fixes files
 ```
@@ -36,8 +40,8 @@ npm run lint
 ```
 
 {
-  "cucumberautocomplete.steps": ["cypress/e2e/step_definitions/*.ts"],
-  "cucumberautocomplete.syncfeatures": "cypress/e2e/*.feature",
+  "cucumberautocomplete.steps": ["tests/e2e/step_definitions/*.ts"],
+  "cucumberautocomplete.syncfeatures": "tests/e2e/*.feature",
   "cucumberautocomplete.strictGherkinCompletion": false,
   "cucumberautocomplete.smartSnippets": true,
   "cucumberautocomplete.stepsInvariants": true
