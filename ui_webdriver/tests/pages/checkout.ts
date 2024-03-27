@@ -8,26 +8,8 @@ async function searchArrayInList(nameKey: string, myArray: any) {
   }
 }
 
-async function removeArrayInList(nameKey: string, myArray: any) {
-  for (let i = 0; i < myArray.length; i++) {
-    if (myArray[i].name === nameKey) {
-      return myArray.splice(i, 1);
-    }
-  }
-}
-
-export async function removeItem(itemPosition: string) {
-  const storedValues = await searchArrayInList(itemPosition, storeValues);
-
-  await browser.$(storedValues.title).$('..[class="cart_item"]').$('[data-test^="remove"]').click();
-
-  await removeArrayInList(itemPosition, storeValues);
-}
-
 // ASSERTSIONS //
-async function validateItemsInCart(storedValues) {
-  console.log('help', storedValues.title);
-
+async function validateItemsInCart(storedValues: any) {
   const nameResult = await browser
     .$(
       `//div[contains(text(), "${storedValues.title}")]//ancestor::div[@class="cart_item"]//div[@class="inventory_item_name"]`,
@@ -49,9 +31,7 @@ export async function ValidateTotalCart(itemTotal: string) {
 }
 
 export async function ValidateItemInCart(itemValue: string) {
-  console.log('pre-cry', itemValue);
   const storedValues = await searchArrayInList(itemValue, storeValues);
-  console.log('cry', storedValues);
   await validateItemsInCart(storedValues);
 }
 

@@ -24,3 +24,8 @@ Go to: ui_cypress folder
 ```
 Go to: ui_webdriver folder
 ```
+
+## TestCafe UI Testing
+```
+Go to: ui_testcafe folder
+```

@@ -27,7 +27,7 @@ export function removeItem(itemPosition: string) {
 }
 
 // ASSERTSIONS //
-function validateItemsInCart(storedValues) {
+function validateItemsInCart(storedValues: any) {
   cy.contains(storedValues.title)
     .parents('[class="cart_item"]')
     .within((info) => {

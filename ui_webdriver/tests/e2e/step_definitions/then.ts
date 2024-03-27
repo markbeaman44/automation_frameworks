@@ -9,6 +9,6 @@ Then(/validates "([^"]*)" item title & price information/, async (itemValue: str
   await checkout.ValidateItemInCart(itemValue.replace(/[^0-9]/g, ''));
 });
 
-Then(/validates all items information in shopping cart/, () => {
-  checkout.ValidatesAllInCart();
+Then(/validates all items information in shopping cart/, async () => {
+  await checkout.ValidatesAllInCart();
 });
