@@ -181,6 +181,7 @@ export const config: Options.Testrunner = {
     afterScenario: async function () {
         await loginPage.logout();
         await hooks.cleanStoredValues();
+        await browser.executeScript('window.localStorage.clear()', [])     
     },
     /**
      *
