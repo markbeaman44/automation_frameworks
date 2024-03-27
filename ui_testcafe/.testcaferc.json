@@ -1,0 +1,23 @@
+{
+    "browsers": "chrome",
+    "baseUrl": "https://www.saucedemo.com",
+    "src": ["tests/e2e/step_definitions/*.ts","tests/e2e/*.feature"],
+    "screenshots": {
+        "path": "screenshots/",
+        "takeOnFails": true,
+        "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    },
+    "quarantineMode": false,
+    "stopOnFirstFail": true,
+    "skipJsErrors": true,
+    "skipUncaughtErrors": true,
+    "concurrency": 1,
+    "selectorTimeout": 3000,
+    "assertionTimeout": 1000,
+    "pageLoadTimeout": 1000,
+    "disablePageCaching": true,
+    "disableNativeAutomation": true,
+    "clientScripts": [
+        { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
+      ]
+}

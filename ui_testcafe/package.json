@@ -1,0 +1,24 @@
+{
+  "name": "ui_testcafe",
+  "type": "module",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.3.1",
+    "@testing-library/testcafe": "^5.0.1",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "gherkin-testcafe": "^7.2.0",
+    "prettier": "^2.3.2",
+    "testcafe": "^3.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  },
+  "scripts": {
+    "test:open": "node_modules/.bin/gherkin-testcafe 'chrome' tests/e2e/step_definitions/*.ts tests/e2e/*.feature",
+    "test:run": "node_modules/.bin/gherkin-testcafe 'chrome:headless' tests/e2e/step_definitions/*.ts tests/e2e/*.feature",
+    "test:test": "node_modules/.bin/gherkin-testcafe 'chrome' tests/e2e/step_definitions/*.ts tests/e2e/*.feature --tags @TEST",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+  }
+}
