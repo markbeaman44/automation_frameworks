@@ -29,3 +29,8 @@ Go to: ui_webdriver folder
 ```
 Go to: ui_testcafe folder
 ```
+
+## Playwright UI Testing
+```
+Go to: ui_playwright folder
+```
