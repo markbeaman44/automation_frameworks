@@ -1,0 +1,27 @@
+{
+  "name": "ui_playright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "@types/node": "^20.12.2"
+  },
+  "scripts": {
+    "test:open": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:report": "npx playwright show-report", 
+    "test:run": "npx playwright test",
+    "test:test": "npx playwright test -g 'ADD_TEST_TITLE_HERE'",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+  }
+}
