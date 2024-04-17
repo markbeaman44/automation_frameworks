@@ -4,15 +4,32 @@
 ```
 Go to: api_cypress folder
 ```
-
-## Jest Axios API Testing
+### Guides
 ```
-Go to: api_jest_axios folder
+https://docs.cypress.io/api/commands/request
+```
+
+## Jest API Testing
+```
+Go to: api_jest folder
+```
+### Guides
+```
+https://jestjs.io/docs/expect
 ```
 
 ## Postman API Testing
 ```
 Go to: api_postman folder
+```
+
+## Pytest API Testing
+```
+Go to: api_pytest folder
+```
+### Guides
+```
+hhttps://docs.pytest.org/en/8.0.x/
 ```
 
 ## Cypress UI Testing
