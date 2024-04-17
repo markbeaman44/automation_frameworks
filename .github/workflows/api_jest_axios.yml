@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install modules
         run: npm install
-        working-directory: ./api_jest_axios
+        working-directory: ./api_jest
       - name: Jest run
         run: npm run test
-        working-directory: ./api_jest_axios
+        working-directory: ./api_jest
