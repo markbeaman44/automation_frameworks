@@ -1,0 +1,15 @@
+version: "3.4"
+
+services:
+  
+  behave:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: behave features
+    environment:
+      - local=false
+    env_file:
+      - docker-compose.env
+    volumes:
+      - .:/var/app:z

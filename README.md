@@ -70,4 +70,5 @@ Go to: ui_selenium folder
 ### Guides
 ```
 https://www.selenium.dev/documentation/webdriver/elements/locators/
+https://www.selenium.dev/documentation/webdriver/elements/interactions/
 ```

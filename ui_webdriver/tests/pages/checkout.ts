@@ -1,11 +1,7 @@
 import { storeValues } from '../support/constant.js';
 
 async function searchArrayInList(nameKey: string, myArray: any) {
-  for (let i = 0; i < myArray.length; i++) {
-    if (myArray[i].name === nameKey) {
-      return myArray[i];
-    }
-  }
+  return myArray.filter((i: any) =>  i.name === nameKey )[0]
 }
 
 // ASSERTSIONS //

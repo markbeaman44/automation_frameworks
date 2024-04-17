@@ -1,0 +1,10 @@
+[behave]
+default_format=pretty
+# log_capture=yes
+logging_level=DEBUG
+logging_format = %(asctime)s %(name)s %(levelname)s %(name)s %(message)s
+logging_clear_handlers=no
+junit=yes
+junit_directory=./reports
+format=rerun
+outfiles=rerun_failing.features
