@@ -21,9 +21,6 @@ def before_all(context):
 
 	context.driver.get("https://www.saucedemo.com/")
 
-# def before_scenario(context, scenario):
-# 	context.driver.get("https://www.saucedemo.com/")
-
 def after_scenario(context, scenario):
 	logout(context)
 	storeValues = []
