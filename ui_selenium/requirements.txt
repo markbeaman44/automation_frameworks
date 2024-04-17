@@ -1,0 +1,11 @@
+astroid==2.2.5
+behave==1.2.6
+isort==4.3.18
+lazy-object-proxy==1.10.0
+mccabe==0.6.1
+pylint==2.3.1
+selenium==4.15.0
+six==1.12.0
+typed-ast==1.5.5
+urllib3==2.2.1
+wrapt==1.11.1
