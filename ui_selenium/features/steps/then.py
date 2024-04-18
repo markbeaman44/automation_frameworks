@@ -1,14 +1,14 @@
 from behave import then
-from features.pages.checkout import ValidateTotalCart, ValidateItemInCart, ValidatesAllInCart
+from features.pages.checkout import validate_total_cart, validate_item_in_cart, validates_all_in_cart
 
-@then('validates "{itemTotal}" items in shopping cart')
-def step_impl(context, itemTotal: str):
-	ValidateTotalCart(context, itemTotal)
+@then('validates "{item_total}" items in shopping cart')
+def step_impl(context, item_total: str):
+	validate_total_cart(context, item_total)
 
-@then('validates "{itemValue}" item title & price information')
-def step_impl(context, itemValue: str):
-	ValidateItemInCart(context, itemValue)
+@then('validates "{item_value}" item title & price information')
+def step_impl(context, item_value: str):
+	validate_item_in_cart(context, item_value)
 
 @then('validates all items information in shopping cart')
 def step_impl(context):
-	ValidatesAllInCart(context)
+	validates_all_in_cart(context)

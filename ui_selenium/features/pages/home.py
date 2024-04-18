@@ -1,22 +1,22 @@
 from selenium.webdriver.common.by import By
-from features.support.constant import storeValues
+from features.support.constant import store_values
 
-def cssItemSelector(itemPosition: str):
-    return f'[class="inventory_list"] [class="inventory_item"]:nth-of-type({itemPosition})'
+def css_item_selector(item_position: str): 
+    return f'[class="inventory_list"] [class="inventory_item"]:nth-of-type({item_position})'
 
-def storeSelectedValues(context, itemPosition: str):
-    priceValue = context.driver.find_element(By.CSS_SELECTOR, f'{cssItemSelector(itemPosition)} [class="inventory_item_price"]')
-    name = context.driver.find_element(By.CSS_SELECTOR, f'{cssItemSelector(itemPosition)} [class="inventory_item_label"] > a')
+def store_selected_values(context, item_position: str):
+    price_value = context.driver.find_element(By.CSS_SELECTOR, f'{css_item_selector(item_position)} [class="inventory_item_price"]')
+    name = context.driver.find_element(By.CSS_SELECTOR, f'{css_item_selector(item_position)} [class="inventory_item_label"] > a')
 
-    storeValues.append({ 'name': itemPosition, 'title': name.text, 'price': priceValue.text })
+    store_values.append({ 'name': item_position, 'title': name.text, 'price': price_value.text })
 
-def selectItem(context, itemPosition: str):
-    storeSelectedValues(context, itemPosition)
-    context.driver.find_element(By.CSS_SELECTOR, f'{cssItemSelector(itemPosition)} button').click()
+def select_item(context, item_position: str):
+    store_selected_values(context, item_position)
+    context.driver.find_element(By.CSS_SELECTOR, f'{css_item_selector(item_position)} button').click()
 
-def goToShoppingCart(context):
+def go_to_shopping_cart(context):
     context.driver.find_element(By.CSS_SELECTOR, '[id="shopping_cart_container"]').click()
 
-def selectRandomItems(context, itemRandomItems: int):
-    for x in range(int(itemRandomItems)):
-        selectItem(context, str(x + 1))
+def select_random_items(context, item_random_items: int):
+    for x in range(int(item_random_items)):
+        select_item(context, str(x + 1))
