@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 from features.pages.login import logout
-from features.support.constant import storeValues
+from features.support.constant import store_values
 
 def before_all(context):
 	is_local = os.environ.get("LOCAL")
@@ -23,7 +23,7 @@ def before_all(context):
 
 def after_scenario(context, scenario):
 	logout(context)
-	storeValues = []
+	store_values = []
 	context.driver.execute_script("window.localStorage.clear();")
 
 def after_all(context):
