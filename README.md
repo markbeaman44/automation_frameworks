@@ -30,6 +30,7 @@ Go to: api_pytest folder
 ### Guides
 ```
 hhttps://docs.pytest.org/en/8.0.x/
+https://pypi.org/project/requests/
 ```
 
 ## Cypress UI Testing
