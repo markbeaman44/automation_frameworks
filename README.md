@@ -90,3 +90,13 @@ Go to: ui_selenium folder
 https://www.selenium.dev/documentation/webdriver/elements/locators/
 https://www.selenium.dev/documentation/webdriver/elements/interactions/
 ```
+
+## Appium with Webdriver.io UI Testing
+```
+Go to: ui_appium_webdriver folder
+```
+### Guides
+```
+https://webdriver.io/docs/api/appium/
+https://appium.readthedocs.io/en/stable/en/commands/element/find-elements/#example-usage
+```
