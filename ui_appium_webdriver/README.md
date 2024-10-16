@@ -69,7 +69,7 @@ In terminal do: `adb devices` then add to "appium:deviceName"
 ## Run your end-to-end tests
 ```
 Android Studio Emulator - Go to Android Studio, new or existing project >> Device Manager, select and run device
-nom run appium
+npm run appium
 npm run test:open
 ```
 execute tests via GUI through emulator
