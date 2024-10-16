@@ -48,7 +48,6 @@ export PATH=${JAVA_HOME}/bin:$PATH
 
 
 ## Appium Inspector
-In terminal, navigate to project root folder, then type:
 ```
 https://inspector.appiumpro.com/ or https://github.com/appium/appium-inspector/releases
 
