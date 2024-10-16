@@ -41,7 +41,7 @@ export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/plat
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home
 export PATH=${JAVA_HOME}/bin:$PATH
 ```
-- Go to Android Studio, SDK Manager >> SDK Tools and choose Hide Obsolete Packages and
+- Go to Android Studio, SDK Manager >> SDK Tools and choose Hide Obsolete Packages
 - Install the “Android SDK Tools” which was marked as Obsolete
 
 ![screenshot](./readme-images/obsoleteSDK.png)
@@ -63,14 +63,12 @@ setup:
 
 To check listed devices:
 In terminal do: `adb devices` then add to "appium:deviceName"
-
-
 ```
 
 
 ## Run your end-to-end tests
 ```
-Android Studio Emulator - 
+Android Studio Emulator - Go to Android Studio, new or existing project >> Device Manager, select and run device
 nom run appium
 npm run test:open
 ```
