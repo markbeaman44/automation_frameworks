@@ -40,14 +40,11 @@ export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/plat
 /usr/libexec/java_home  - this gives u `/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home`
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-18.0.1.1.jdk/Contents/Home
 export PATH=${JAVA_HOME}/bin:$PATH
-
-Go to Android Studio, SDK Manager >> SDK Tools and choose Hide Obsolete Packages and
-Install the “Android SDK Tools” which was marked as Obsolete
+```
+- Go to Android Studio, SDK Manager >> SDK Tools and choose Hide Obsolete Packages and
+- Install the “Android SDK Tools” which was marked as Obsolete
 
 ![screenshot](./readme-images/obsoleteSDK.png)
-
-```
-
 
 
 ## Appium Inspector
