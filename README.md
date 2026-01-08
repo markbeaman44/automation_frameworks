@@ -1,5 +1,11 @@
 # Automation Frameworks
 
+## Co-pilot
+example:
+```
+create new e2e Cypress TypeScript Cucumber Page Object Model framework
+```
+
 ## Cypress API Testing
 ```
 Go to: api_cypress folder
