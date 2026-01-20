@@ -1,6 +1,12 @@
 # Automation Frameworks
 
-## Co-pilot
+## Co-pilot (.copilot-instructions.md)
+example:
+```
+create new e2e Cypress TypeScript Cucumber Page Object Model framework
+```
+
+## Anti-Gravity Agents (AGENTS.md)
 example:
 ```
 create new e2e Cypress TypeScript Cucumber Page Object Model framework
