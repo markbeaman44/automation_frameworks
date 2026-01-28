@@ -1,0 +1,7 @@
+/react_js
+.DS_store
+
+# k6 specific
+api_k6/results.json
+api_k6/summary.json
+api_k6/k6-report/
