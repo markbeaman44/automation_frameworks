@@ -1,0 +1,35 @@
+{
+  "name": "api_k6",
+  "version": "1.0.0",
+  "description": "k6 API Performance Testing Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "k6 run tests/e2e/v1/positions.js && k6 run tests/e2e/v1/tles.js",
+    "test:positions": "k6 run tests/e2e/v1/positions.js",
+    "test:tles": "k6 run tests/e2e/v1/tles.js",
+    "test:load": "k6 run --vus 10 --duration 30s tests/e2e/v1/positions.js",
+    "test:stress": "k6 run --vus 100 --duration 60s tests/e2e/v1/positions.js",
+    "test:smoke": "k6 run --vus 1 --duration 10s tests/e2e/v1/positions.js",
+    "test:spike": "k6 run --stage 10s:0,5s:100,10s:0 tests/e2e/v1/positions.js",
+    "test:html": "k6 run --out json=results.json tests/e2e/v1/positions.js",
+    "lint": "eslint '**/*.js' --quiet --fix",
+    "format": "prettier --write '**/*.js'"
+  },
+  "keywords": [
+    "k6",
+    "performance",
+    "load-testing",
+    "api-testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.4"
+  },
+  "dependencies": {
+    "k6": "^0.0.0"
+  }
+}

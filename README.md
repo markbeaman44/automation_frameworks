@@ -30,6 +30,18 @@ Go to: api_jest folder
 https://jestjs.io/docs/expect
 ```
 
+## k6 API Performance Testing
+```
+Go to: api_k6 folder
+```
+### Guides
+```
+https://k6.io/docs/
+https://k6.io/docs/using-k6/http-requests/
+https://k6.io/docs/using-k6/checks/
+https://k6.io/docs/using-k6/thresholds/
+```
+
 ## Postman API Testing
 ```
 Go to: api_postman folder
