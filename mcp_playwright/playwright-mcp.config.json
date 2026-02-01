@@ -1,0 +1,14 @@
+{
+    "browser": {
+        "browserName": "chromium",
+        "isolated": true,
+        "launchOptions": {
+            "headless": false,
+            "args": [
+                "--disable-features=PasswordLeakDetection,PasswordManager",
+                "--disable-save-password-bubble",
+                "--incognito"
+            ]
+        }
+    }
+}
