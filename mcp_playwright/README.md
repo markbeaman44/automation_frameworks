@@ -11,9 +11,16 @@ npm install
 
 ## Playwright MCP Server Setup
 
-To connect this MCP server to your editor (e.g., Antigravity, Cursor, etc.), add the following configuration to your `mcp_config.json` file. This file is typically located at the root of your workspace or managed via your editor's "Manage MCP Servers" interface.
+### Connecting in Antigravity
 
-**`mcp_config.json`**:
+To connect to a custom MCP server in Antigravity:
+
+1. Open the **MCP store** via the **"..."** dropdown at the top of the editor's agent panel.
+2. Click on **"Manage MCP Servers"**.
+3. Click on **"View raw config"**.
+4. Modify the `mcp_config.json` with your custom MCP server configuration:
+5. Replace `{{HOME_PATH_TO_REPO_INSERT_HERE}}` with the path to your local repository.
+   - Go to playwright-mcp.config.json, right-click on the file, and select "Copy path".
 
 ```json
 {
@@ -24,9 +31,9 @@ To connect this MCP server to your editor (e.g., Antigravity, Cursor, etc.), add
       "timeout": 30,
       "args": [
         "-y",
-        "@playwright/mcp@latest"
+        "@playwright/mcp@latest",
+        "--config={{HOME_PATH_TO_REPO_INSERT_HERE}}/playwright-mcp.config.json"
       ],
-      "cwd": "./mcp_playwright",
       "disabled": false
     }
   }
@@ -36,7 +43,6 @@ To connect this MCP server to your editor (e.g., Antigravity, Cursor, etc.), add
 ### Notes
 - The configuration above uses `npx` to run the latest version of the Playwright MCP server on demand.
 - This allows the server to run without needing to manually start it every time.
-- A config file is included in this directory: `playwright.config.ts` due to chrome popup issues when running in any mode.
 
 ## Running the Manual Test Case
 
@@ -46,5 +52,6 @@ We have created a sample "Agent Task" that you can feed to your AI assistant to 
 2.  Go to AI chat.
 3.  Say something like: 
     > "Using the Playwright MCP tools, please execute the test case described in MANUAL_TEST_CASE.md"
+    > "Using the Playwright MCP tools, please execute the test case described in MANUAL_TEST_CASE.md - only Scenario 1"
 
 The agent should then launch a browser (headless or visible depending on config), interact with the site, and report back the results.

@@ -11,8 +11,5 @@
   "description": "",
   "dependencies": {
     "@playwright/mcp": "^0.0.62"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.58.1"
   }
 }
