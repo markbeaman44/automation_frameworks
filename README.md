@@ -124,3 +124,13 @@ Go to: ui_appium_webdriver folder
 https://webdriver.io/docs/api/appium/
 https://appium.readthedocs.io/en/stable/en/commands/element/find-elements/#example-usage
 ```
+
+## Playwright UI Testing with MCP
+```
+Go to: mcp_playwright folder
+```
+### Guides
+```
+https://www.npmjs.com/package/@playwright/mcp
+https://antigravity.codes/mcp/playwright
+```
