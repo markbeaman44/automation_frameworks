@@ -1,4 +1,4 @@
-# Agent Task: Shopping Cart Verification
+# Agent Task: Execute Manual Test Case
 
 This file describes a manual test case for an AI agent to execute using the Playwright MCP tools.
 
@@ -18,45 +18,18 @@ This file describes a manual test case for an AI agent to execute using the Play
   - Create and overwrite **Report Files** in the `reports/` directory without asking for confirmation.
   - **JUST DO IT**. Do not stop to ask "Shall I proceed?".
 
-## Scenario 1: Add 1st Item to Cart
+## Execution Instructions
 
-**Goal**: Verify that a standard user can successfully login, add the first item to their cart, and validate it appears on the checkout page.
+1.  **Read Scenarios**: Open the file `TEST_SCENARIOS.md` to find the specific test steps for the requested scenario.
+2.  **Execute Scenario**: Follow the instructions in the chosen scenario.
+3.  **Perform Teardown**: Run the steps defined in the "Teardown (Run After Test Suite)" section below.
 
+## Teardown (Run After Test Suite)
 
-**Instructions for Agent**:
+**CRITICAL**: These steps must be performed IMMEDIATELY after the last step of any scenario.
 
-1.  **Navigate** to the application URL: `https://www.saucedemo.com/`
-2.  **Login** with the following credentials:
-    -   **Username**: `standard_user`
-    -   **Password**: `secret_sauce`
-3.  **Find** the first item in the inventory list.
-4.  **Click** the "Add to cart" button for that first item.
-5.  **Navigate** to the Shopping Cart (click the cart icon).
-6.  **Verify** the following:
-    -   There is exactly '1' item in the shopping cart badge or list.
-    -   The item name matches the one you added.
-7.  **Logout** from the application.
-8.  **Quit** the browser.
-9.  **Generate Report** (See "Reporting" section below). -> **CRITICAL**: Do this AFTER closing the browser.
-
-
-## Scenario 2: Incorrect Login
-
-**Goal**: Verify that user cannot login with incorrect credentials.
-
-**Instructions for Agent**:
-
-1.  **Navigate** to the application URL: `https://www.saucedemo.com/`
-2.  **Login** with the following credentials:
-    -   **Username**: `standard_user`
-    -   **Password**: `banana`
-3.  **Verify** user cannot login.
-4.  **Quit** the browser.
-5.  **Generate Report** (See "Reporting" section below). -> **CRITICAL**: Do this AFTER closing the browser.
-
----
-
-## Reporting
+1.  **Quit** the browser.
+2.  **Generate Report** (See "Reporting" section below). -> **CRITICAL**: Do this AFTER closing the browser.
 
 ## Reporting
 

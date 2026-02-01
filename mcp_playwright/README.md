@@ -48,10 +48,11 @@ To connect to a custom MCP server in Antigravity:
 
 We have created a sample "Agent Task" that you can feed to your AI assistant to verify the setup.
 
-1.  Open the file `MANUAL_TEST_CASE.md`.
-2.  Go to AI chat.
+1.  Add test scenario(s) to the file `TEST_SCENARIOS.md`.
+2.  Go to AI/Agent chat in Antigravity.
 3.  Say something like: 
-    > "Using the Playwright MCP tools, please execute the test case described in MANUAL_TEST_CASE.md"
-    > "Using the Playwright MCP tools, please execute the test case described in MANUAL_TEST_CASE.md - only Scenario 1"
+    > "Using the Playwright MCP tools, please execute the test case described in TEST_SCENARIOS.md"
+    
+    > "Using the Playwright MCP tools, please execute the test case described in TEST_SCENARIOS.md - only Scenario 1"
 
 The agent should then launch a browser (headless or visible depending on config), interact with the site, and report back the results.
