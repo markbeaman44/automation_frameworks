@@ -1,5 +1,6 @@
 /react_js
 .DS_store
+.playwright-mcp/
 
 # k6 specific
 api_k6/results.json

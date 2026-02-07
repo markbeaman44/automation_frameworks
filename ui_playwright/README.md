@@ -31,23 +31,3 @@ execute chosen test against tags via GUI
 ```
 npm run lint
 ```
-
-## VS Code Setup for Cucumber assistence
-
-### Cucumber (Gherkin) Full Support
-
-- Create Folder called `.vscode`
-
-- Add file called `settings.json`
-
-- Within `settings.json` add:
-```
-
-{
-  "cucumberautocomplete.steps": ["tests/e2e/step_definitions/*.ts"],
-  "cucumberautocomplete.syncfeatures": "tests/e2e/*.feature",
-  "cucumberautocomplete.strictGherkinCompletion": false,
-  "cucumberautocomplete.smartSnippets": true,
-  "cucumberautocomplete.stepsInvariants": true
-}
-```

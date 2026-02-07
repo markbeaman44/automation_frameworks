@@ -1,7 +1,7 @@
 # Test Scenarios
 
 This file contains the individual scenarios to be executed by the agent.
-Refer to `TEST_SETUP.md` for global pre-requisites, teardown steps, permissions, and reporting guidelines.
+Refer to [TEST_SETUP.md](./TEST_SETUP.md) for global pre-requisites, teardown steps, permissions, and reporting guidelines.
 
 ## Scenario 1: Add 1st Item to Cart
 

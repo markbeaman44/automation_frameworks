@@ -4,6 +4,7 @@ This file describes a manual test case for an AI agent to execute using the Play
 
 ## Global Pre-requisites
 - Read global mcp_config.json at ~/.gemini/antigravity/mcp_config.json
+- Read playwright-mcp.config.json at project level
 - Ensure the Playwright MCP server is active
 - Browser tools (browser_click, browser_fill_form, etc.) are available
 
@@ -18,6 +19,28 @@ This file describes a manual test case for an AI agent to execute using the Play
   - Create and overwrite **Report Files** in the `reports/` directory without asking for confirmation.
   - **JUST DO IT**. Do not stop to ask "Shall I proceed?".
 
+## STRICT ADHERENCE GUIDELINES (DO NOT IGNORE)
+
+1.  **Environment Config (CRITICAL)**:
+    -   **Analyze `mcp/init-page.ts`**: Check this file for viewport settings and permissions. You **MUST** apply the viewport size defined here (e.g. `1280x720`) using `browser_resize` or `setViewportSize` if the browser opens with a different size.
+    -   **Analyze `mcp/init-script.js`**: Read this file to understand the anti-bot measures (e.g. `navigator.webdriver` overrides).
+    -   **Verification**: Before starting the scenario, **verify** the environment matches these files. For example, check if `navigator.webdriver` is `undefined`. If not, you may need to manually inject the script using `browser_evaluate`.
+
+2.  **Popups**: If a popup appears, PAUSE and ask the user. Do not try to click around it unless you have a specific script to kill it.
+
+3.  **Reporting**:
+    -   **IF TEST PASSES**: The "Evidence" section of the report MUST be empty. Do NOT list screenshots there, even if you took them. Screenshots signify failure to this user.
+    -   **IF TEST FAILS**: Only THEN list the screenshots in the report.
+
+4.  **Browser Closing**: You MUST call `browser_close` at the end. If it fails or the window stays open, note it, but you MUST attempt it.
+
+## Handling Interruptions
+-   **Popups**: If an unsuppressed browser popup (e.g., Chrome Password Manager) appears and blocks interaction:
+    1.  **Pause Execution**: Do not attempt to force interactions if they are failing due to the popup.
+    2.  **Notify User**: Explicitly ask the user to clear the popup manually.
+        -   Example: "A browser popup is blocking the test. Please click 'Never' or close the popup to continue."
+    3.  **Wait for Confirmation**: Ask the user to confirm they have cleared the popup before resuming the test steps.
+
 ## Execution Instructions
 
 1.  **Read Scenarios**: Open the file `TEST_SCENARIOS.md` to find the specific test steps for the requested scenario.
@@ -28,7 +51,7 @@ This file describes a manual test case for an AI agent to execute using the Play
 
 **CRITICAL**: These steps must be performed IMMEDIATELY after the last step of any scenario.
 
-1.  **Quit** the browser.
+1.  **Force Close Browser**: You MUST use the `browser_close` tool to explicitly close the browser page/context. do NOT assume it closes automatically.
 2.  **Generate Report** (See "Reporting" section below). -> **CRITICAL**: Do this AFTER closing the browser.
 
 ## Reporting

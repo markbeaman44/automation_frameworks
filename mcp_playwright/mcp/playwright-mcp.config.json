@@ -3,7 +3,7 @@
         "browserName": "chromium",
         "isolated": true,
         "launchOptions": {
-            "headless": false,
+            "headless": true,
             "args": [
                 "--disable-features=PasswordLeakDetection,PasswordManager",
                 "--disable-save-password-bubble",
