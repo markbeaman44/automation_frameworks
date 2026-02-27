@@ -23,7 +23,7 @@ The Agent runs the test suite to identify the failing test and error message.
 
 ### Step 2: Replicate State (The "Eyes")
 The Agent uses **MCP Tools** to manually navigate to the page and inspect the element causing the failure. This effectively "sees" what the automation script cannot.
--   **CRITICAL**: Before interacting with the browser, **READ `TEST_SETUP.md`** to ensure your environment (viewport, permissions, etc.) matches the test expectations.
+-   **CRITICAL**: Before interacting with the browser, **READ `mcp/TEST_SETUP.md`** to ensure your environment (viewport, permissions, etc.) matches the test expectations.
 -   **Action**: Use `browser_navigate` to go to the URL.
 -   **Action**: Use `browser_click` / `browser_fill_form` to reach the specific state where the failure occurred.
 -   **Action**: Use `browser_snapshot` or `browser_take_screenshot` to inspect the current DOM and find the *new* correct selector (e.g., `#new-submit-btn`).
@@ -39,6 +39,31 @@ The Agent re-runs **ONLY** the specific test file that failed to ensure the fix 
 -   **CRITICAL**: Do NOT run the full suite (`npm run test:run`). You must be surgical to verify the fix quickly and avoid unrelated failures.
 -   **Command**: `npx playwright test tests/path_to_failing_test.spec.ts`
 -   **Success Criteria**: The test passes (exit code 0).
+
+---
+
+## Workflow: Recording & Test Generation (V2)
+
+**Goal**: Create a new test case from a user-captured session via the Interactive Recorder.
+
+### Step 1: Detect Recording
+The user says "Generate test from recording".
+-   **Source**: Read `e2e_recorder/recordings/latest.json`.
+-   **Structure**: The JSON now contains an `actions` array with rich metadata:
+    -   `type`: 'click', 'input', 'assert', 'navigation'
+    -   `userPrompt`: Custom AI instructions added via the UI.
+    -   `assertion`: Explicit assertion types (e.g., 'toBeVisible').
+
+### Step 2: Generate Code
+Convert the JSON events into Playwright actions.
+-   **Rulebook**: strict adherence to `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md`.
+-   **Prompts**: If `userPrompt` exists, generate logic to satisfy it (e.g., "Wait for modal" -> `await page.waitForSelector(...)`).
+-   **Assertions**: Map `type: assert` to Playwright `expect()` calls.
+-   **Selectors**: Use the `selector` field provided, but fall back to `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md` priorities if needed.
+
+### Step 3: Verify
+-   **Write File**: Save to `tests/generated_test.spec.ts` (or appropriate name).
+-   **Run**: `npx playwright test tests/generated_test.spec.ts` to confirm it passes.
 
 ---
 

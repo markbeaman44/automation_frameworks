@@ -22,6 +22,7 @@
     "include": [
         "mcp",
         "tests",
-        "playwright.config.ts"
+        "playwright.config.ts",
+        "e2e_recorder"
     ]
 }

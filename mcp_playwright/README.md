@@ -33,11 +33,11 @@ To connect to a custom MCP server in Antigravity:
         "-y",
         "@playwright/mcp@latest",
         "--config",
-        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/playwright-mcp.config.json",
+        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/setup/playwright-mcp.config.json",
         "--init-page",
-        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/init-page.ts",
+        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/setup/init-page.ts",
         "--init-script",
-        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/init-script.js"
+        "{{HOME_PATH_TO_REPO_INSERT_HERE}}/mcp/setup/init-script.js"
       ],
       "disabled": false
     }
@@ -48,9 +48,9 @@ To connect to a custom MCP server in Antigravity:
 ### Browser Configuration Files
 The following files are critical for consistent test execution:
 
-1.  **`mcp/playwright-mcp.config.json`**: Controls browser launch options (headless, args).
-2.  **`mcp/init-page.ts`**: Handles page state reset (cookies, permissions) and **viewport size**.
-3.  **`mcp/init-script.js`**: Handles browser context scripts (e.g. eliminating bot detection).
+1.  **`mcp/setup/playwright-mcp.config.json`**: Controls browser launch options (headless, args).
+2.  **`mcp/setup/init-page.ts`**: Handles page state reset (cookies, permissions) and **viewport size**.
+3.  **`mcp/setup/init-script.js`**: Handles browser context scripts (e.g. eliminating bot detection).
 
 Ensure your `mcp_config.json` points to these files correctly using the `--init-page` and `--init-script` arguments.
 
@@ -58,12 +58,17 @@ Ensure your `mcp_config.json` points to these files correctly using the `--init-
 
 We have created a sample "Agent Task" that you can feed to your AI assistant to verify the setup.
 
-1.  Add test scenario(s) to the file [TEST_SCENARIOS.md](./TEST_SCENARIOS.md).
-2.  Go to AI/Agent chat in Antigravity.
-3.  Say something like: 
-    > "Using the Playwright MCP tools, please execute the test case described in TEST_SCENARIOS.md"
+1.  Run `yarn mcp:setup:manual` to create the agent workflow file locally.
+2.  Add test scenario(s) to the file [mcp/TEST_SCENARIOS.md](./mcp/TEST_SCENARIOS.md).
+3.  Go to AI/Agent chat in Antigravity.
+4.  Use the shortcut: 
+    > `@[/manual_test]` 
     
-    > "Using the Playwright MCP tools, please execute the test case described in TEST_SCENARIOS.md - only Scenario 1"
+    > `@[/manual_test] 1` (to execute only Scenario 1)
+5.  backup: 
+    > "Using the Playwright MCP tools, please execute the test case described in mcp/TEST_SCENARIOS.md"
+    
+    > "Using the Playwright MCP tools, please execute the test case described in mcp/TEST_SCENARIOS.md - only Scenario 1"
 
 The agent should then launch a browser (headless or visible depending on config), interact with the site, and report back the results.
 
@@ -81,6 +86,20 @@ execute tests (run in background)
 npm run test:report
 ```
 view test results after npm run test:run
+
+## Recording Tests (Beta)
+To create new tests by recording your interactions:
+```bash
+npm run record
+
+# Or to start directly at a specific URL:
+npm run record --url saucedemo.com
+```
+1. Enter the URL you want to test.
+2. Interact with the browser (Click, Type, Navigate).
+3. Close the browser window to save the recording.
+4. The recording is saved to `e2e_recorder/recordings/latest.json`.
+5. **Ask the Agent**: "Generate a test from the latest recording."
 
 ## Agent Mode & Self-Healing
 This framework is optimized for AI-assisted development and "Self-Healing" automation.

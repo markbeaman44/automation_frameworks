@@ -1,8 +1,6 @@
 node_modules/
-reports/sample_report_*
-reports/test_report_*
-reports/screenshots/*
-/test-results/
-/playwright-report/
+/test-output/*
 /blob-report/
 /playwright/.cache/
+/mcp/reports/test_report_*
+/mcp/reports/screenshots/*

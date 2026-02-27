@@ -5,25 +5,28 @@
   "scripts": {
     "test:open": "npx playwright test --ui",
     "test:debug": "npx playwright test --debug",
-    "test:report": "npx playwright show-report",
+    "test:report": "npx playwright show-report test-output/report",
     "test:run": "npx playwright test",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "e2e_recorder": "npx tsx e2e_recorder/run_recorder.ts",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "mcp:setup:manual": "mkdir -p .agents/workflows && echo '---\ndescription: Run Playwright manual tests\n---\nUsing the Playwright MCP tools, please execute the test case described in mcp/TEST_SCENARIOS.md.\nIf the user provides a number (e.g. \"1\"), run ONLY that specific Scenario.' > .agents/workflows/manual_test.md"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/mcp": "^0.0.62",
-    "@playwright/test": "^1.58.2",
     "@playwright/browser-chromium": "^1.58.2",
     "@playwright/browser-firefox": "^1.58.2",
+    "@playwright/mcp": "^0.0.62",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "tsx": "^4.21.0"
   }
 }
