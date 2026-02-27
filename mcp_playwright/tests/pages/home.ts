@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 import { storeValues } from '../support/constant';
 
 export class HomePage {
-  constructor(private page: Page) { }
+  constructor(private page: Page) {}
 
   cssItemSelector(itemPosition: string) {
     return `[class="inventory_list"] [class="inventory_item"]:nth-of-type(${itemPosition})`;

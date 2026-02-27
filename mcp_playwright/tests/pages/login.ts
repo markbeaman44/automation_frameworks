@@ -12,7 +12,7 @@ enum id {
 }
 
 export class LoginPage {
-  constructor(private page: Page) { }
+  constructor(private page: Page) {}
 
   async login(username: string, password: string) {
     await this.page.getByPlaceholder(textValues.username).fill(username);
