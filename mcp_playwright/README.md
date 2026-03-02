@@ -109,8 +109,13 @@ npm run record --url saucedemo.com
 6.  **Persistence**: The session is saved to `e2e_recorder/recordings/latest.json`. If you exit and restart, you can resume your previous session.
 
 ### Generating the Test:
-Once you have recorded your flow, simply ask the **AI Agent**:
+Once you have recorded your flow, ask the **AI Agent**:
 > "Generate a Playwright test from my latest recording."
+
+The Agent follows these structural rules:
+1.  **POM FIRST**: Maps actions (like login) to existing Page Object methods instead of using raw selectors.
+2.  **Structural Integrity**: Moves navigation and login to `test.beforeEach` and uses relative URLs (`/`).
+3.  **Encapsulated Assertions**: Creates validation functions within Page Objects (e.g. `validateCardInfo`) rather than adding raw `expect()` assertions directly to the spec.
 
 ## Agent Mode & Self-Healing
 This framework is optimized for AI-assisted development and "Self-Healing" automation.

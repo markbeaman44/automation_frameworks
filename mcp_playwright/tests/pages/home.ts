@@ -1,8 +1,8 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { storeValues } from '../support/constant';
 
 export class HomePage {
-  constructor(private page: Page) {}
+  constructor(private page: Page) { }
 
   cssItemSelector(itemPosition: string) {
     return `[class="inventory_list"] [class="inventory_item"]:nth-of-type(${itemPosition})`;
@@ -32,5 +32,14 @@ export class HomePage {
     for (let i = 1; i <= itemRandomItems; i++) {
       await this.selectItem(i.toString());
     }
+  }
+
+  // ASSERTSIONS //
+
+  async validateCardInfo(itemName: string, expectedColor: string) {
+    const locator = this.page.locator('div.inventory_item_name').filter({ hasText: itemName });
+    await expect(locator).toBeVisible();
+    await expect(locator).toHaveText(itemName);
+    await expect(locator).toHaveCSS('color', expectedColor);
   }
 }

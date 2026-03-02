@@ -42,7 +42,7 @@ The Agent re-runs **ONLY** the specific test file that failed to ensure the fix 
 
 ---
 
-## Workflow: Recording & Test Generation (V2)
+## Workflow: Recording & Test Generation (E2E Recorder)
 
 **Goal**: Create a new test case from a user-captured session via the Interactive Recorder.
 

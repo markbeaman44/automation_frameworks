@@ -17,11 +17,15 @@ This document outlines the workflow for recording user interactions and generati
 
 When generating tests from `e2e_recorder/recordings/latest.json`, the AI Agent MUST follow these rules:
 
-### A. Framework Consistency
--   **Detect Pattern**: Check `tests/` for existing patterns (Page Object Model vs. Inline).
-    -   If POM exists, create/update Page Objects in `pages/` or `lib/` and consume them in the test.
-    -   If Inline exists, follow the structure of existing `.spec.ts` files.
--   **Naming**: Use descriptive names for variables and test cases based on the actions (e.g., `test('User can login and view dashboard')`).
+### A. Framework Consistency & POM
+-   **Analyze Structural Pattern**: Check `tests/e2e/` for existing `test.beforeEach` blocks and `tests/pages/` for existing Page Object Models.
+-   **Setup & Navigation**: 
+    - Always prefer `await page.goto('/')` for the initial landing page.
+    - Move setup actions (navigation + login) into a `test.beforeEach` block.
+-   **Page Object Model (POM)**:
+    - If a Page Object exists (e.g., `LoginPage`, `HomePage`), call its methods (e.g., `await loginPage.login(user, password)`) instead of duplicating selectors.
+    - **Assertions**: Create reusable validation functions in the Page Objects (e.g., `await homePage.validateCardInfo(name, color)`) rather than placing raw `expect()` statements directly in the spec file.
+-   **Naming**: Use descriptive test case names based on the flow (e.g., `test('successfully logs in and verifies product styles')`).
 
 ### B. Selector Strategy
 -   **Priority**:

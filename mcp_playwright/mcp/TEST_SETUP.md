@@ -67,4 +67,24 @@ Please **generate a Markdown report** in the `mcp/reports/` folder.
 -   **IF TEST PASSES**: Do NOT include or link the browser recording in the report.
 -   **IF TEST FAILS**: You MUST include the full path to the browser recording (artifact) in the "Evidence" section of the report so the user can see what went wrong.
 
+## E2E Automation Generation (POST-TEST)
+
+**CRITICAL**: After completing a manual test execution, use the following logic to decide if you should prompt the user:
+
+1.  **Check Status**: Did the scenario **PASS**?
+    - If **FAIL**, do NOT prompt for E2E automation. Stop.
+    - If **PASS**, Proceed to prompt.
+2.  **Context**: The prompt MUST only offer automation for the specific scenario(s) that were **just executed** in this session.
+
+> "I have finished the manual test execution for **Scenario [X]** and it passed. Would you like me to generate a new E2E automation test for it? (Option: yes / no)"
+
+### If User Says YES:
+1.  **Analyze**: Review the just-executed scenario in `mcp/TEST_SCENARIOS.md` and your execution logs.
+2.  **Generate**: Create a new `.spec.ts` file in `tests/e2e/`.
+3.  **STRICT ADHERENCE**: Follow all rules in `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md` -> **Section 2A: Framework Consistency & POM**.
+4.  **Verify**: Run the newly created test to confirm it passes.
+
+### If User Says NO:
+-   **End Task**: Acknowledge the choice and stop.
+
 **Expected Outcome**: The agent should complete the entire flow without errors and report success upon verifying the item in the cart.
