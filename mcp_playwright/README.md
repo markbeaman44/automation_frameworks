@@ -58,7 +58,7 @@ Ensure your `mcp_config.json` points to these files correctly using the `--init-
 
 We have created a sample "Agent Task" that you can feed to your AI assistant to verify the setup.
 
-1.  Run `yarn mcp:setup:manual` to create the agent workflow file locally.
+1.  Run `npm run mcp:setup:manual` to create the agent workflow file locally.
 2.  Add test scenario(s) to the file [mcp/TEST_SCENARIOS.md](./mcp/TEST_SCENARIOS.md).
 3.  Go to AI/Agent chat in Antigravity.
 4.  Use the shortcut: 
@@ -91,10 +91,10 @@ view test results after npm run test:run
 The framework includes a powerful **Interactive E2E Recorder** with a floating UI to build tests visually.
 
 ```bash
-npm run record
+npm run e2e_recorder
 
 # Or to start directly at a specific URL:
-npm run record --url saucedemo.com
+npm run e2e_recorder --url saucedemo.com
 ```
 
 ### Recorder Features:
