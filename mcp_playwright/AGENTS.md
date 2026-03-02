@@ -49,17 +49,21 @@ The Agent re-runs **ONLY** the specific test file that failed to ensure the fix 
 ### Step 1: Detect Recording
 The user says "Generate test from recording".
 -   **Source**: Read `e2e_recorder/recordings/latest.json`.
--   **Structure**: The JSON now contains an `actions` array with rich metadata:
-    -   `type`: 'click', 'input', 'assert', 'navigation'
-    -   `userPrompt`: Custom AI instructions added via the UI.
-    -   `assertion`: Explicit assertion types (e.g., 'toBeVisible').
+-   **Structure**: The JSON contains an `actions` array with rich metadata:
+-       - **Standard actions**: `{ type: 'click', selector, role?, userPrompt? }`
+-       - **Fills**: `{ type: 'input', selector, value, role? }`
+-       - **Assertions**: `{ type: 'assert', selector, assertion: 'toHaveText', value, attributeName?, tagName? }`
+-   **Note**: The user might have edited these fields within the interactive UI to fix incorrect selectors or adjust expectations.
 
 ### Step 2: Generate Code
 Convert the JSON events into Playwright actions.
--   **Rulebook**: strict adherence to `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md`.
--   **Prompts**: If `userPrompt` exists, generate logic to satisfy it (e.g., "Wait for modal" -> `await page.waitForSelector(...)`).
+-   **Rulebook**: Strict adherence to `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md`.
 -   **Assertions**: Map `type: assert` to Playwright `expect()` calls.
--   **Selectors**: Use the `selector` field provided, but fall back to `e2e_recorder/E2E_RECORDER_TEST_GUIDE.md` priorities if needed.
+    -   `toHaveCSS` -> `expect(locator).toHaveCSS(attributeName, value)`
+    -   `toHaveAttribute` -> `expect(locator).toHaveAttribute(attributeName, value)`
+    -   `toBeVisible` -> `expect(locator).toBeVisible()`
+-   **Prompts**: If `userPrompt` exists, use it to guide custom logic generation (e.g., specific wait conditions or edge case handling).
+-   **Selectors**: Use the `selector` field. Users may have already "healed" it via the ⊕ re-pick tool in the recorder UI.
 
 ### Step 3: Verify
 -   **Write File**: Save to `tests/generated_test.spec.ts` (or appropriate name).

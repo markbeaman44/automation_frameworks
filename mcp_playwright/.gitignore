@@ -4,3 +4,5 @@ node_modules/
 /playwright/.cache/
 /mcp/reports/test_report_*
 /mcp/reports/screenshots/*
+/e2e_recorder/recordings/*
+   

@@ -267,14 +267,105 @@
   min-height: 24px !important;
 }
 
-.edit-inline {
+.edit-inline-wrap {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Two-field row for INPUT edits */
+.edit-input-row {
+  display: flex !important;
+  gap: 4px !important;
+  align-items: center !important;
   width: 100% !important;
+}
+
+/* Assert edit: row 1 — selector + type dropdown */
+.edit-assert-row1 {
+  display: flex !important;
+  gap: 4px !important;
+  align-items: center !important;
+  margin-bottom: 4px !important;
+}
+
+/* Assert edit: row 2 — attr name + value */
+.edit-assert-row2 {
+  display: flex !important;
+  gap: 4px !important;
+  align-items: center !important;
+}
+
+.edit-assert-type {
+  flex: 0 0 auto !important;
   font-family: monospace !important;
   font-size: 11px !important;
   border: 1px solid #007bff !important;
   padding: 2px 4px !important;
   outline: none !important;
+  background: #fff !important;
+  cursor: pointer !important;
+  border-radius: 2px !important;
 }
+
+/* Three-field row for attribute-based asserts (toHaveCSS, toHaveAttribute, etc.) */
+.edit-input-row--3 .edit-inline-sel {
+  flex: 1.2 !important;
+}
+
+.edit-inline-attr {
+  flex: 0 0 90px !important;
+  min-width: 0 !important;
+}
+
+.edit-inline-sel {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.edit-inline-val {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.edit-inline {
+  flex: 1 !important;
+  width: 100% !important;
+  font-family: monospace !important;
+  font-size: 11px !important;
+  border: 1px solid #007bff !important;
+  padding: 2px 28px 2px 4px !important;
+  outline: none !important;
+}
+
+.edit-repick-btn {
+  position: absolute !important;
+  right: 2px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  border: none !important;
+  background: transparent !important;
+  cursor: crosshair !important;
+  font-size: 13px !important;
+  padding: 2px 4px !important;
+  line-height: 1 !important;
+  border-radius: 3px !important;
+  color: #aaa !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: color 0.15s, background 0.15s !important;
+}
+
+.edit-repick-btn:hover {
+  color: #007bff !important;
+  background: #e8f0fe !important;
+}
+
+.edit-repick-btn.picking {
+  color: #007bff !important;
+  background: #cfe2ff !important;
+}
+
 
 /* Row 3: Prompt */
 .card-row-bot {
@@ -361,6 +452,7 @@
 .assertion-grid label {
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: 6px !important;
   margin: 0 !important;
   padding: 8px !important;
@@ -368,14 +460,29 @@
   border: 1px solid #ddd !important;
   border-radius: 4px !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.15s ease !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  user-select: none !important;
+}
+
+.assertion-grid label:hover:not(.disabled) {
+  border-color: #28a745 !important;
+  background: #f0fff4 !important;
+  color: #1a7a30 !important;
+}
+
+.assertion-grid label.active {
+  border-color: #28a745 !important;
+  background: #28a745 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25) !important;
 }
 
 .assertion-grid label input[type="radio"] {
-  margin: 0 !important;
+  display: none !important;
 }
 
 .assertion-grid label.disabled {
@@ -383,6 +490,7 @@
   cursor: not-allowed !important;
   background: #f9f9f9 !important;
 }
+
 
 .modal-options label {
   display: block !important;

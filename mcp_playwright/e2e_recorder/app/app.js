@@ -9,6 +9,12 @@ if (!__recRoot) {
   (function (__recRoot) {
     // own scope, avoids polluting globals
 
+    // ── Remove any stale document-level listeners from a previous injection ───
+    if (window.__recHandlers) {
+      document.removeEventListener('click', window.__recHandlers.click, true);
+      document.removeEventListener('change', window.__recHandlers.change, true);
+      document.removeEventListener('mousemove', window.__recHandlers.mousemove, true);
+    }
     var actions = (window.__recorderInitialActions || []).slice();
     var isRecording = false;
     var isAssertMode = false;
@@ -118,7 +124,8 @@ if (!__recRoot) {
     }
 
     // ── Render action list ────────────────────────────────────────────────────
-    function renderList() {
+    function renderList(preserveScroll) {
+      var prevScrollTop = actionList.scrollTop;
       actionList.innerHTML = '';
       if (actions.length === 0) {
         actionList.innerHTML =
@@ -139,13 +146,13 @@ if (!__recRoot) {
           '<div class="card-actions">' +
           '<button class="action-check-btn __rec-edit" data-idx="' +
           idx +
-          '" title="Edit">✏️ edit</button>' +
+          '" title="Edit">✏️</button>' +
           '<button class="action-check-btn __rec-dup"  data-idx="' +
           idx +
-          '" title="Duplicate">📋 dup</button>' +
+          '" title="Duplicate">⿻</button>' +
           '<button class="action-check-btn __rec-del"  data-idx="' +
           idx +
-          '" title="Delete">🗑️ del</button>' +
+          '" title="Delete">🗑️</button>' +
           '</div>' +
           '</div>' +
           '<div class="card-row-mid" id="__rec_mid_' +
@@ -166,7 +173,11 @@ if (!__recRoot) {
         actionList.appendChild(card);
       });
 
-      actionList.scrollTop = actionList.scrollHeight;
+      if (preserveScroll) {
+        actionList.scrollTop = prevScrollTop;
+      } else {
+        actionList.scrollTop = actionList.scrollHeight;
+      }
 
       // Delete
       [].forEach.call(__recRoot.querySelectorAll('.__rec-del'), function (btn) {
@@ -175,7 +186,7 @@ if (!__recRoot) {
           var i = +btn.getAttribute('data-idx');
           if (window.onDeleteAction) window.onDeleteAction(i);
           actions.splice(i, 1);
-          renderList();
+          renderList(true);
         };
       });
 
@@ -186,8 +197,8 @@ if (!__recRoot) {
           var i = +btn.getAttribute('data-idx');
           var copy = Object.assign({}, actions[i], { timestamp: Date.now() });
           actions.splice(i + 1, 0, copy);
-          if (window.onAction) window.onAction(copy);
-          renderList();
+          if (window.onDupAction) window.onDupAction(i);
+          renderList(true);
         };
       });
 
@@ -197,20 +208,156 @@ if (!__recRoot) {
           e.stopPropagation();
           var i = +btn.getAttribute('data-idx');
           var mid = __recRoot.querySelector('#__rec_mid_' + i);
+
           if (!mid) return;
-          mid.innerHTML = '<input class="edit-inline" type="text" value="' + actions[i].selector + '">';
-          var inp = mid.querySelector('.edit-inline');
+
+          var action = actions[i];
+          var isInput = action && action.type === 'input';
+          var isAssert = action && action.type === 'assert';
+          var canRepick = action && (action.type === 'click' || isInput || isAssert);
+
+          var REPICK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>';
+          var SEL_WRAP = '<div class="edit-inline-wrap edit-inline-sel"><input class="edit-inline" type="text" placeholder="Selector" value="' + action.selector + '"><button class="edit-repick-btn" title="Re-pick element on page">' + REPICK_SVG + '</button></div>';
+
+          if (isAssert) {
+            // ── Assert: 2-row layout ─────────────────────────────────────────
+            // Row 1: [selector+repick | assertion type dropdown]
+            // Row 2: [attr name (conditional)] [expected value (conditional)]
+            var ASSERT_ALL = ['toBeVisible', 'toBeEnabled', 'toBeDisabled', 'toBeChecked', 'toBeInViewport',
+              'toHaveCount', 'toHaveText', 'toContainText', 'toHaveValue', 'toHaveValues',
+              'toHaveClass', 'toHaveId', 'toHaveRole', 'toHaveAttribute', 'toHaveCSS', 'toHaveJSProperty'];
+            var ASSERT_ATTR = ['toHaveAttribute', 'toHaveCSS', 'toHaveJSProperty'];
+            var ASSERT_NOVAL = ['toBeVisible', 'toBeEnabled', 'toBeDisabled', 'toBeChecked', 'toBeInViewport'];
+
+            var selOpts = ASSERT_ALL.map(function (t) {
+              return '<option value="' + t + '"' + (t === action.assertion ? ' selected' : '') + '>' + t + '</option>';
+            }).join('');
+
+            mid.innerHTML =
+              '<div class="edit-assert-row1">' + SEL_WRAP +
+              '<select class="edit-assert-type">' + selOpts + '</select>' +
+              '</div>' +
+              '<div class="edit-assert-row2">' +
+              '<input class="edit-inline edit-inline-attr" type="text" placeholder="Property name" value="' + (action.attributeName || '') + '">' +
+              '<input class="edit-inline edit-inline-val"  type="text" placeholder="Expected value" value="' + (action.value || '') + '">' +
+              '</div>';
+
+          } else if (isInput) {
+            // ── Input: 2-field row [selector+repick | value] ─────────────────
+            mid.innerHTML =
+              '<div class="edit-input-row">' + SEL_WRAP +
+              '<input class="edit-inline edit-inline-val" type="text" placeholder="Value" value="' + (action.value || '') + '">' +
+              '</div>';
+
+          } else {
+            // ── Click / Navigation: single selector field ────────────────────
+            mid.innerHTML =
+              '<div class="edit-inline-wrap">' +
+              '<input class="edit-inline" type="text" value="' + action.selector + '">' +
+              (canRepick ? '<button class="edit-repick-btn" title="Re-pick element on page">' + REPICK_SVG + '</button>' : '') +
+              '</div>';
+          }
+
+          var inp = mid.querySelector('.edit-inline');         // selector (always first)
+          var inpAttr = mid.querySelector('.edit-inline-attr');    // attributeName (assert only)
+          var inpVal = mid.querySelector('.edit-inline-val');     // value
+          var selAssert = mid.querySelector('.edit-assert-type');    // assertion type dropdown
+          var row2 = mid.querySelector('.edit-assert-row2');    // second row (assert only)
+          var isRepicking = false;
+
           inp.focus();
           inp.select();
-          function save() {
-            actions[i].selector = inp.value;
-            if (window.onUpdateAction) window.onUpdateAction(i, { selector: inp.value });
-            renderList();
+
+          // ── Dynamic assert row2 visibility ───────────────────────────────
+          var ASSERT_ATTR = ['toHaveAttribute', 'toHaveCSS', 'toHaveJSProperty'];
+          var ASSERT_NOVAL = ['toBeVisible', 'toBeEnabled', 'toBeDisabled', 'toBeChecked', 'toBeInViewport'];
+          function updateAssertRow2() {
+            if (!selAssert || !row2) return;
+            var type = selAssert.value;
+            var needsAttr = ASSERT_ATTR.indexOf(type) >= 0;
+            var needsVal = ASSERT_NOVAL.indexOf(type) < 0;
+            if (inpAttr) inpAttr.style.display = needsAttr ? '' : 'none';
+            if (inpVal) inpVal.style.display = needsVal ? '' : 'none';
+            row2.style.display = needsVal ? '' : 'none';
           }
-          inp.onblur = save;
-          inp.onkeydown = function (ev) {
-            if (ev.key === 'Enter') inp.blur();
-          };
+          updateAssertRow2(); // apply on open
+
+          if (selAssert) {
+            selAssert.onchange = updateAssertRow2;
+          }
+
+          // ── saveAll ───────────────────────────────────────────────────────
+          function saveAll() {
+            if (isRepicking) return;
+            var active = document.activeElement;
+            if (active === inp || active === inpAttr || active === inpVal || active === selAssert) return;
+            var update = { selector: inp.value };
+            actions[i].selector = inp.value;
+            if (selAssert) { actions[i].assertion = selAssert.value; update.assertion = selAssert.value; }
+            if (inpAttr) { actions[i].attributeName = inpAttr.value; update.attributeName = inpAttr.value; }
+            if (inpVal) { actions[i].value = inpVal.value; update.value = inpVal.value; }
+            if (window.onUpdateAction) window.onUpdateAction(i, update);
+            renderList(true);
+          }
+
+          // Shared blur timer across all sibling fields
+          var blurTimer = null;
+          function scheduleSave() { clearTimeout(blurTimer); blurTimer = setTimeout(saveAll, 200); }
+
+          function bindField(el) {
+            if (!el) return;
+            el.onblur = scheduleSave;
+            el.onkeydown = function (ev) {
+              if (ev.key === 'Enter') { clearTimeout(blurTimer); isRepicking = false; el.blur(); }
+              if (ev.key === 'Escape') { clearTimeout(blurTimer); isRepicking = false; renderList(true); }
+            };
+          }
+          bindField(inp);
+          bindField(inpAttr);
+          bindField(inpVal);
+          if (selAssert) selAssert.onblur = scheduleSave;
+
+          // ── Repick logic (shared for both layouts) ───────────────────────
+          if (canRepick) {
+            var repickBtn = mid.querySelector('.edit-repick-btn');
+            repickBtn.onmousedown = function (ev) { ev.preventDefault(); };
+            repickBtn.onclick = function (ev) {
+              ev.stopPropagation();
+              isRepicking = true;
+              repickBtn.classList.add('picking');
+              document.body.style.cursor = 'crosshair';
+              highlight.classList.remove('hidden');
+
+              function onRepickClick(ev) {
+                if (__recRoot.contains(ev.target)) return;
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                var role = getRole(ev.target) || undefined;
+                var sel = getSelector(ev.target, role);
+                inp.value = sel;
+                document.removeEventListener('click', onRepickClick, true);
+                document.removeEventListener('mousemove', onRepickMove, true);
+                highlight.classList.add('hidden');
+                document.body.style.cursor = '';
+                isRepicking = false;
+                repickBtn.classList.remove('picking');
+                inp.focus();
+              }
+
+              function onRepickMove(ev) {
+                if (__recRoot.contains(ev.target)) return;
+                var r = ev.target.getBoundingClientRect();
+                highlight.classList.remove('hidden');
+                highlight.style.top = r.top + 'px';
+                highlight.style.left = r.left + 'px';
+                highlight.style.width = r.width + 'px';
+                highlight.style.height = r.height + 'px';
+              }
+
+              document.addEventListener('click', onRepickClick, true);
+              document.addEventListener('mousemove', onRepickMove, true);
+            };
+          }
         };
       });
 
@@ -252,163 +399,158 @@ if (!__recRoot) {
     };
 
     // ── Global event listeners (capture phase) ────────────────────────────────
-    document.addEventListener(
-      'click',
-      function (e) {
-        if (window.__recorderIsReplaying) return;
-        if (__recRoot.contains(e.target)) return; // ignore our own UI
+    // Named handlers stored on window so the NEXT injection can remove them first,
+    // preventing stale listener accumulation across page navigations / re-injections.
+    var __clickHandler = function (e) {
+      if (window.__recorderIsReplaying) return;
+      if (__recRoot.contains(e.target)) return; // ignore our own UI
 
-        if (isAssertMode) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          var role = getRole(e.target) || undefined;
-          var sel = getSelector(e.target, role);
-          modalSel.textContent = sel;
+      if (isAssertMode) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var role = getRole(e.target) || undefined;
+        var sel = getSelector(e.target, role);
+        modalSel.textContent = sel;
 
-          // Capture text and value
-          // Capture text and value
-          window.__recorderAssertTarget = e.target;
-          window.__recorderAssertText = (e.target.innerText || e.target.textContent || '').trim();
-          window.__recorderAssertValue = e.target.value || '';
-          window.__recorderAssertRole = role;
+        // Capture text and value
+        window.__recorderAssertTarget = e.target;
+        window.__recorderAssertText = (e.target.innerText || e.target.textContent || '').trim();
+        window.__recorderAssertValue = e.target.value || '';
+        window.__recorderAssertRole = role;
 
-          // Reset default state
-          var paramsPanel = __recRoot.querySelector('#assertion-params-panel');
-          if (paramsPanel) paramsPanel.classList.add('hidden');
+        // Reset default state
+        var paramsPanel = __recRoot.querySelector('#assertion-params-panel');
+        if (paramsPanel) paramsPanel.classList.add('hidden');
 
-          // Remove active from any existing, and check visibility
-          [].forEach.call(__recRoot.querySelectorAll('.assertion-grid label'), function (lbl) {
-            lbl.classList.remove('active');
-          });
+        // Remove active from any existing, and check visibility
+        [].forEach.call(__recRoot.querySelectorAll('.assertion-grid label'), function (lbl) {
+          lbl.classList.remove('active');
+        });
 
-          var defRadio = __recRoot.querySelector('input[name="assertion-type"][value="toBeVisible"]');
-          if (defRadio) {
-            defRadio.checked = true;
-            defRadio.parentElement.classList.add('active');
+        var defRadio = __recRoot.querySelector('input[name="assertion-type"][value="toBeVisible"]');
+        if (defRadio) {
+          defRadio.checked = true;
+          defRadio.parentElement.classList.add('active');
+        }
+
+        // Check node type to disable value-based assertions if not applicable
+        var isInputLike =
+          e.target.tagName && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(e.target.tagName.toUpperCase()) >= 0;
+        [].forEach.call(__recRoot.querySelectorAll('.assertion-grid input[name="assertion-type"]'), function (radio) {
+          var val = radio.value;
+          var shouldDisable = false;
+          if ((val === 'toHaveValue' || val === 'toHaveValues') && !isInputLike) {
+            shouldDisable = true;
           }
-
-          // Check node type to disable value-based assertions if not applicable
-          var isInputLike =
-            e.target.tagName && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(e.target.tagName.toUpperCase()) >= 0;
-          [].forEach.call(__recRoot.querySelectorAll('.assertion-grid input[name="assertion-type"]'), function (radio) {
-            var val = radio.value;
-            var shouldDisable = false;
-            if ((val === 'toHaveValue' || val === 'toHaveValues') && !isInputLike) {
+          if (val === 'toBeChecked') {
+            if (e.target.tagName !== 'INPUT' || (e.target.type !== 'checkbox' && e.target.type !== 'radio')) {
               shouldDisable = true;
             }
-            if (val === 'toBeChecked') {
-              if (e.target.tagName !== 'INPUT' || (e.target.type !== 'checkbox' && e.target.type !== 'radio')) {
-                shouldDisable = true;
-              }
-            }
+          }
 
-            if (shouldDisable) {
-              radio.disabled = true;
-              radio.parentElement.classList.add('disabled');
-            } else {
-              radio.disabled = false;
-              radio.parentElement.classList.remove('disabled');
-            }
-          });
+          if (shouldDisable) {
+            radio.disabled = true;
+            radio.parentElement.classList.add('disabled');
+          } else {
+            radio.disabled = false;
+            radio.parentElement.classList.remove('disabled');
+          }
+        });
 
-          // Update params UI explicitly for the default selection
-          var defEvent = new Event('change');
-          if (defRadio) defRadio.dispatchEvent(defEvent);
+        // Update params UI explicitly for the default selection
+        var defEvent = new Event('change');
+        if (defRadio) defRadio.dispatchEvent(defEvent);
 
-          modal.classList.remove('hidden');
-          highlight.classList.add('hidden');
+        modal.classList.remove('hidden');
+        highlight.classList.add('hidden');
 
-          var oldBtn = __recRoot.querySelector('#btn-confirm-assert');
-          var newBtn = oldBtn.cloneNode(true);
-          oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-          newBtn.onclick = function () {
-            var type = (__recRoot.querySelector('input[name="assertion-type"]:checked') || {}).value || 'toBeVisible';
-            var attrName = __recRoot.querySelector('#assertion-attribute-name').value;
-            var val = __recRoot.querySelector('#assertion-attribute-value').value;
-            var needsName = type === 'toHaveAttribute' || type === 'toHaveCSS' || type === 'toHaveJSProperty';
-            var needsValue =
-              needsName ||
-              [
-                'toContainText',
-                'toHaveClass',
-                'toHaveId',
-                'toHaveRole',
-                'toHaveText',
-                'toHaveValue',
-                'toHaveValues',
-              ].indexOf(type) >= 0;
+        var oldBtn = __recRoot.querySelector('#btn-confirm-assert');
+        var newBtn = oldBtn.cloneNode(true);
+        oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+        newBtn.onclick = function () {
+          var type = (__recRoot.querySelector('input[name="assertion-type"]:checked') || {}).value || 'toBeVisible';
+          var attrName = __recRoot.querySelector('#assertion-attribute-name').value;
+          var val = __recRoot.querySelector('#assertion-attribute-value').value;
+          var needsName = type === 'toHaveAttribute' || type === 'toHaveCSS' || type === 'toHaveJSProperty';
+          var needsValue =
+            needsName ||
+            [
+              'toContainText',
+              'toHaveClass',
+              'toHaveId',
+              'toHaveRole',
+              'toHaveText',
+              'toHaveValue',
+              'toHaveValues',
+            ].indexOf(type) >= 0;
 
-            var action = {
-              type: 'assert',
-              selector: sel,
-              assertion: type,
-              value: needsValue ? val : undefined,
-              role: role,
-              attributeName: needsName ? attrName : undefined,
-              timestamp: Date.now(),
-            };
-            actions.push(action);
-            renderList();
-            if (window.onAction) window.onAction(action);
-            closeModal();
-          };
-          return;
-        }
-
-        if (isRecording) {
-          var role = getRole(e.target) || undefined;
           var action = {
-            type: 'click',
-            selector: getSelector(e.target, role),
-            tagName: e.target.tagName,
+            type: 'assert',
+            selector: sel,
+            assertion: type,
+            value: needsValue ? val : undefined,
             role: role,
+            attributeName: needsName ? attrName : undefined,
             timestamp: Date.now(),
           };
           actions.push(action);
           renderList();
           if (window.onAction) window.onAction(action);
-        }
-      },
-      true,
-    );
+          closeModal();
+        };
+        return;
+      }
 
-    document.addEventListener(
-      'change',
-      function (e) {
-        if (window.__recorderIsReplaying) return;
-        if (__recRoot.contains(e.target)) return;
-        if (isRecording) {
-          var role = getRole(e.target) || undefined;
-          var action = {
-            type: 'input',
-            selector: getSelector(e.target, role),
-            value: e.target.value,
-            role: role,
-            timestamp: Date.now(),
-          };
-          actions.push(action);
-          renderList();
-          if (window.onAction) window.onAction(action);
-        }
-      },
-      true,
-    );
+      if (isRecording) {
+        var role = getRole(e.target) || undefined;
+        var action = {
+          type: 'click',
+          selector: getSelector(e.target, role),
+          tagName: e.target.tagName,
+          role: role,
+          timestamp: Date.now(),
+        };
+        actions.push(action);
+        renderList();
+        if (window.onAction) window.onAction(action);
+      }
+    };
 
-    document.addEventListener(
-      'mousemove',
-      function (e) {
-        if (window.__recorderIsReplaying) return;
-        if (!isAssertMode || __recRoot.contains(e.target) || e.target === hoveredEl) return;
-        hoveredEl = e.target;
-        var r = e.target.getBoundingClientRect();
-        highlight.classList.remove('hidden');
-        highlight.style.top = r.top + 'px';
-        highlight.style.left = r.left + 'px';
-        highlight.style.width = r.width + 'px';
-        highlight.style.height = r.height + 'px';
-      },
-      true,
-    );
+    var __changeHandler = function (e) {
+      if (window.__recorderIsReplaying) return;
+      if (__recRoot.contains(e.target)) return;
+      if (isRecording) {
+        var role = getRole(e.target) || undefined;
+        var action = {
+          type: 'input',
+          selector: getSelector(e.target, role),
+          value: e.target.value,
+          role: role,
+          timestamp: Date.now(),
+        };
+        actions.push(action);
+        renderList();
+        if (window.onAction) window.onAction(action);
+      }
+    };
+
+    var __mousemoveHandler = function (e) {
+      if (window.__recorderIsReplaying) return;
+      if (!isAssertMode || __recRoot.contains(e.target) || e.target === hoveredEl) return;
+      hoveredEl = e.target;
+      var r = e.target.getBoundingClientRect();
+      highlight.classList.remove('hidden');
+      highlight.style.top = r.top + 'px';
+      highlight.style.left = r.left + 'px';
+      highlight.style.width = r.width + 'px';
+      highlight.style.height = r.height + 'px';
+    };
+
+    // Store refs on window so the next injection can clean up these listeners
+    window.__recHandlers = { click: __clickHandler, change: __changeHandler, mousemove: __mousemoveHandler };
+    document.addEventListener('click', __clickHandler, true);
+    document.addEventListener('change', __changeHandler, true);
+    document.addEventListener('mousemove', __mousemoveHandler, true);
 
     // ── Control buttons ───────────────────────────────────────────────────────
     function updatePlayPauseUI() {
@@ -515,8 +657,8 @@ if (!__recRoot) {
             type === 'toHaveCSS'
               ? 'Type CSS property...'
               : type === 'toHaveJSProperty'
-              ? 'Type JS property...'
-              : 'Type HTML attribute...';
+                ? 'Type JS property...'
+                : 'Type HTML attribute...';
           var html = '';
           if (type === 'toHaveAttribute' && target && target.attributes) {
             for (var i = 0; i < target.attributes.length; i++) {

@@ -87,19 +87,30 @@ npm run test:report
 ```
 view test results after npm run test:run
 
-## Recording Tests (Beta)
-To create new tests by recording your interactions:
+## Recording Tests (E2E Recorder)
+The framework includes a powerful **Interactive E2E Recorder** with a floating UI to build tests visually.
+
 ```bash
 npm run record
 
 # Or to start directly at a specific URL:
 npm run record --url saucedemo.com
 ```
-1. Enter the URL you want to test.
-2. Interact with the browser (Click, Type, Navigate).
-3. Close the browser window to save the recording.
-4. The recording is saved to `e2e_recorder/recordings/latest.json`.
-5. **Ask the Agent**: "Generate a test from the latest recording."
+
+### Recorder Features:
+1.  **Live Action List**: Watch your clicks, inputs, and navigations appear in the sidebar in real-time.
+2.  **Interactive Assertions**: Click the **ASSERT** button to enter "Crosshair Mode". Click any element to add assertions like `toBeVisible`, `toHaveText`, or `toHaveCSS`.
+3.  **Selective Replay**: Use the **PLAY** button to re-run your entire sequence from the start to verify the flow.
+4.  **Inline Editing**: Click the ✏️ icon on any card to update its properties:
+    -   **Inputs**: Split fields for the element selector and the typed value.
+    -   **Assertions**: Change assertion types (e.g., `toHaveText` to `toBeVisible`) via a dropdown. Complex assertions (`toHaveCSS`) show extra fields for property names.
+    -   **Re-picking**: Click the ⊕ icon inside an edit field to visually re-select any element on the page.
+5.  **Management**: Duplicate (⿻) or Delete (🗑️) actions instantly.
+6.  **Persistence**: The session is saved to `e2e_recorder/recordings/latest.json`. If you exit and restart, you can resume your previous session.
+
+### Generating the Test:
+Once you have recorded your flow, simply ask the **AI Agent**:
+> "Generate a Playwright test from my latest recording."
 
 ## Agent Mode & Self-Healing
 This framework is optimized for AI-assisted development and "Self-Healing" automation.

@@ -129,7 +129,7 @@ async function runRecorder() {
         previousActions = parsed.actions;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   let isWaitingForSessionChoice = !!previousActions;
 
@@ -160,6 +160,16 @@ async function runRecorder() {
     if (index >= 0 && index < events.length) {
       console.log(`[REC] Deleted #${index}`);
       events.splice(index, 1);
+      saveRecording();
+    }
+  });
+
+  await context.exposeFunction('onDupAction', (index: number) => {
+    if (isReplaying) return;
+    if (index >= 0 && index < events.length) {
+      const copy = { ...events[index], timestamp: Date.now() };
+      events.splice(index + 1, 0, copy);
+      console.log(`[REC] Duped #${index}: ${copy.type}`);
       saveRecording();
     }
   });
@@ -248,6 +258,7 @@ async function runRecorder() {
 
     console.log('[REC] Replay complete.');
     isReplaying = false;
+    // Restore UI state cleanly without full re-injection
     await page.evaluate((acts) => {
       if ((window as any).__recorderRestoreState) {
         (window as any).__recorderRestoreState(acts, false);
@@ -256,15 +267,14 @@ async function runRecorder() {
   });
 
   // ── Re-inject UI on EVERY page load (covers GO nav + in-page link clicks) ─
+  // Also fires during replay navigations so the UI stays visible on each page
   page.on('load', async () => {
     await injectUI(page, isWaitingForSessionChoice);
   });
 
   // Handle single page close (clicking X on the tab/window)
-  page.on('close', () => {
-    console.log('\n🛑 Page closed. Exiting...');
-    saveRecording();
-    process.exit(0);
+  page.on('close', async () => {
+    await finishRecording();
   });
 
   // ── Start fresh definition ──────────────────────────────────────────────────
@@ -309,11 +319,26 @@ async function runRecorder() {
     console.log('Recorder ready — type a URL in the bar and click GO.\n');
   }
 
-  browser.on('disconnected', () => {
-    console.log('\n🛑 Browser closed.');
-    saveRecording();
-    process.exit(0);
+  browser.on('disconnected', async () => {
+    await finishRecording();
   });
+}
+
+/**
+ * Handle exit logic with a prompt for generating tests
+ */
+async function finishRecording() {
+  console.log('\n🛑 Recording session finished.');
+  saveRecording();
+
+  console.log('\n✅ Recording saved: e2e_recorder/recordings/latest.json');
+  console.log('\nWould you like the AI agent to take these results and generate a new E2E test?');
+  console.log('The agent will follow E2E_RECORDER_TEST_GUIDE.md and use the current framework structure (POM/Page Objects where appropriate).');
+
+  // This special hidden-ish marker is for the AI Agent to catch and act on proactively
+  console.log('\n[AGENT_GENERATE_TEST_PROMPT]');
+
+  process.exit(0);
 }
 
 function saveRecording() {

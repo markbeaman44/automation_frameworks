@@ -5,12 +5,13 @@ This document outlines the workflow for recording user interactions and generati
 ## 1. The Recording Process
 
 1.  **Start Recording**: Run `npm run e2e_recorder` (or `npx tsx e2e_recorder/run_recorder.ts`).
-2.  **Enter URL**: The script will prompt for the target URL.
-3.  **Interact**: The browser launches. Perform the test actions (clicks, fills, navigations).
-    -   *Tip*: Click slowly and deliberately.
-    -   *Tip*: Use distinctive text or IDs where possible.
-4.  **Finish**: Close the browser window to stop recording.
-5.  **Output**: A JSON file is saved to `e2e_recorder/recordings/latest.json` (and timestamped archive).
+2.  **Interact with Browser**:
+    -   **Click/Type**: Standard interactions are recorded in real-time. Use distinctive, user-centric selectors when prompted.
+    -   **Assertions**: Click the **ASSERT** button to enter crosshair mode. Select an element on the page, then choose an assertion type (`toHaveText`, `toBeVisible`, etc.) from the list.
+    -   **Edit Inline**: Use the ✏️ icon on any sidebar card to update a selector manually or re-pick it with the ⊕ icon. You can also edit typed values and change assertion types.
+    -   **Clean Up**: Duplicate (⿻) or Delete (🗑️) accidental actions instantly.
+3.  **Verify via Replay**: Use the **PLAY** button to re-run your sequence and ensure the flow is stable.
+4.  **Output**: All actions are saved to `e2e_recorder/recordings/latest.json`.
 
 ## 2. Test Generation Rules (AI Agent)
 
@@ -31,11 +32,11 @@ When generating tests from `e2e_recorder/recordings/latest.json`, the AI Agent M
     5.  **AVOID**: Long XPaths or absolute paths (e.g., `div > div > div:nth-child(3)`).
 
 ### C. Validation & Assertions
--   **Implicit**: Playwright actions await navigations automatically.
--   **Explicit**: Add assertions for key checkpoints.
-    -   *Landing*: `await expect(page).toHaveURL(/dashboard/);`
-    -   *Visibility*: `await expect(page.getByText('Welcome')).toBeVisible();`
-    -   *Footer/Header*: Check for common elements to verify page load completeness (e.g., `await expect(page.locator('footer')).toBeVisible();`).
+-   **Explicit Assertions**: Convert `type: assert` actions into `expect()` calls.
+    -   Check `assertion` type and use the `value` and optional `attributeName`.
+    -   Example: `expect(locator).toHaveCSS('color', 'rgb(24, 88, 58)')`.
+-   **Implicit Navigations**: Playwright actions handle navigations automatically, but ensure `expect(page).toHaveURL()` is added if a navigation action exists.
+-   **Checkpoints**: Add assertions for key visibility markers to ensure page load completeness.
 
 ### D. Grouping
 -   Group related tests in `describe` blocks.
