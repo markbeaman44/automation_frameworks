@@ -2,7 +2,7 @@ import { Page, expect } from '@playwright/test';
 import { storeValues } from '../support/constant';
 
 async function searchArrayInList(nameKey: string, myArray: any) {
-  return myArray.filter((i: any) =>  i.name === nameKey )[0]
+  return myArray.filter((i: any) => i.name === nameKey)[0];
 }
 
 export class CheckoutPage {

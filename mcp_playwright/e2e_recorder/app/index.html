@@ -1,0 +1,102 @@
+<!-- This is injected directly into the page <body> by run_recorder.ts -->
+<!-- Root ID must match app.js: __recorder_root__ -->
+
+<div id="__recorder_root__">
+
+    <!-- 1. Top Bar: URL + GO (Left Panel) -->
+    <div class="top-bar-container">
+        <label class="url-label">URL</label>
+        <input type="text" id="url-input" class="url-input" placeholder="https://example.com" />
+        <button id="btn-go" class="btn-go">GO</button>
+    </div>
+
+    <!-- 2. Bottom Bar: Controls (Left Panel) -->
+    <div class="bottom-bar-container">
+        <button id="btn-play-pause" class="btn-ctrl btn-play active">▶ PLAY</button>
+        <button id="btn-assert" class="btn-ctrl btn-assert">ASSERT</button>
+    </div>
+
+    <!-- 3. Sidebar: Live Recorder (Right Panel) -->
+    <div class="sidebar-container">
+        <div class="sidebar-header">
+            LIVE RECORDER DISPLAY
+            <button id="btn-replay" class="btn-replay" title="Replay all recorded actions in browser">↺</button>
+        </div>
+        <div id="action-list" class="action-list">
+            <!-- Injected by app.js renderList() -->
+        </div>
+    </div>
+
+    <!-- 4. Picker Highlight (Full-Screen, outside layout flow) -->
+    <div id="picker-highlight" class="picker-highlight hidden"></div>
+
+    <!-- 5. Assertion Modal -->
+    <div id="assertion-modal" class="modal-backdrop hidden">
+        <div class="modal modal-large">
+            <h3 style="margin-top:0;">Add Assertion</h3>
+            <div id="modal-selector"
+                style="font-family:monospace;background:#f0f0f0;padding:6px;margin-bottom:12px;font-size:11px;border-radius:4px;word-break:break-all;">
+            </div>
+
+            <div class="assertion-grid" id="assertion-options-grid">
+                <label><input type="radio" name="assertion-type" value="toHaveText">Text</label>
+                <label><input type="radio" name="assertion-type" value="toHaveValue">Value</label>
+                <label><input type="radio" name="assertion-type" value="toContainText">Contains Text</label>
+                <label><input type="radio" name="assertion-type" value="toHaveCSS">CSS</label>
+                <label><input type="radio" name="assertion-type" value="toHaveAttribute">Attribute</label>
+                <label><input type="radio" name="assertion-type" value="toHaveValues">Values</label>
+                <label><input type="radio" name="assertion-type" value="toHaveClass">Class</label>
+                <label><input type="radio" name="assertion-type" value="toBeAttached">Attached</label>
+                <label><input type="radio" name="assertion-type" value="toBeChecked">Checked</label>
+                <label><input type="radio" name="assertion-type" value="toBeDisabled">Disabled</label>
+                <label><input type="radio" name="assertion-type" value="toBeEditable">Editable</label>
+                <label><input type="radio" name="assertion-type" value="toBeEmpty">Empty</label>
+                <label><input type="radio" name="assertion-type" value="toBeEnabled">Enabled</label>
+                <label><input type="radio" name="assertion-type" value="toBeFocused">Focused</label>
+                <label><input type="radio" name="assertion-type" value="toBeHidden">Hidden</label>
+                <label><input type="radio" name="assertion-type" value="toBeInViewport">In Viewport</label>
+                <label><input type="radio" name="assertion-type" value="toBeVisible" checked>Visible</label>
+                <label><input type="radio" name="assertion-type" value="toHaveId">ID</label>
+                <label><input type="radio" name="assertion-type" value="toHaveJSProperty">JS Property</label>
+                <label><input type="radio" name="assertion-type" value="toHaveRole">Role</label>
+            </div>
+
+            <div id="assertion-params-panel" class="hidden" style="margin-top:12px;">
+                <div style="display:flex;gap:4px;">
+                    <div id="assertion-name-container" style="flex:1; display:none;">
+                        <input type="text" id="assertion-attribute-name" list="assertion-attribute-name-list"
+                            class="prompt-input" placeholder="Name..." style="width:100%;box-sizing:border-box;">
+                        <datalist id="assertion-attribute-name-list"></datalist>
+                    </div>
+                    <div id="assertion-value-container" style="flex:1; display:none;">
+                        <input type="text" id="assertion-attribute-value" class="prompt-input"
+                            placeholder="Expected value..." style="width:100%;box-sizing:border-box;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;text-align:right;display:flex;gap:8px;justify-content:flex-end;">
+                <button id="btn-cancel-assert" class="btn-ctrl" style="flex:0;padding:6px 14px;">Cancel</button>
+                <button id="btn-confirm-assert" class="btn-ctrl btn-play active"
+                    style="flex:0;padding:6px 14px;">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Continue Session Modal (shown when latest.json exists) -->
+    <div id="continue-session-modal" class="modal-backdrop hidden">
+        <div class="modal">
+            <h3 style="margin-top:0;">📝 Resume Recording?</h3>
+            <p style="margin:0 0 16px;font-size:13px;color:#555;">
+                We found a previous recording session. Would you like to continue from where you left off, or start
+                fresh?
+            </p>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button id="btn-session-new" class="btn-ctrl" style="flex:0;padding:6px 16px;">Start New</button>
+                <button id="btn-session-continue" class="btn-play btn-ctrl" style="flex:0;padding:6px 16px;">Continue
+                    Previous</button>
+            </div>
+        </div>
+    </div>
+
+</div>
