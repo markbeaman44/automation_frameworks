@@ -1,0 +1,39 @@
+name: TlesIntegrationTest
+vars:
+  url: https://api.wheretheiss.at
+testcases:
+  - name: Status code check 200 json
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/tles?format=json'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.headers.Content-Type ShouldContain "application/json"
+  - name: Status code check 200 text
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/tles?format=text'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.headers.Content-Type ShouldContain "text/plain"
+  - name: Status code check 404
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25543/tles?format=json'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 404

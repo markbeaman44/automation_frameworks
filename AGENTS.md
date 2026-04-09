@@ -39,3 +39,4 @@ Use the view_file tool to read the specific instructions for each framework.
 - **[Cypress (API Testing)](.agents/frameworks/cypress_api.md)**
 - **[k6 (API Performance Testing)](.agents/frameworks/k6_api.md)**
 - **[MCP Playwright (Agent-Driven)](.agents/frameworks/mcp_playwright.md)**
+- **[Venom (API Testing)](.agents/frameworks/venom_api.md)**

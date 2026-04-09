@@ -6,3 +6,7 @@
 api_k6/results.json
 api_k6/summary.json
 api_k6/k6-report/
+
+# venom specific
+venom.*.log
+venom.log

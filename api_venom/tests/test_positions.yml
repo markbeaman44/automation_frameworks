@@ -1,0 +1,86 @@
+name: PositionsIntegrationTest
+vars:
+  url: https://api.wheretheiss.at
+testcases:
+  - name: Valid timestamp 200
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions?timestamps=1436029892'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+  - name: Missing timestamp 400
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 400
+  - name: Invalid id 404
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25543/positions?timestamps=1436029892'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 404
+  - name: Multiple timestamps 200
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions?timestamps=1436029892,1436029902'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+  - name: Response data for specific timestamp
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions?timestamps=1436029902'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.body ShouldContainSubstring "iss"
+          - result.body ShouldContainSubstring "-25.344256"
+          - result.body ShouldContainSubstring "kilometers"
+  - name: Correct unit measurement check converted calculations
+    steps:
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions?timestamps=1036029892&units=kilometers'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.body ShouldContainSubstring "kilometers"
+          - result.body ShouldContainSubstring "421.02686"
+      - type: http
+        method: GET
+        url: '{{.url}}/v1/satellites/25544/positions?timestamps=1036029892&units=miles'
+        retry: 2
+        delay: 5
+        timeout: 120
+        ignore_verify_ssl: true
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.body ShouldContainSubstring "miles"
+          - result.body ShouldContainSubstring "261.61388"

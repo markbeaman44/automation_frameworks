@@ -51,6 +51,16 @@ hhttps://docs.pytest.org/en/8.0.x/
 https://pypi.org/project/requests/
 ```
 
+## Venom API Testing
+```
+Go to: api_venom folder
+```
+### Guides
+```
+https://github.com/ovh/venom
+```
+
+
 ## Cypress UI Testing
 ```
 Go to: ui_cypress folder
